@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WealthOS v1.5 — Financial Boundary Closure</title>
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --card-bg: #131b28;
+      --border: #1e293b;
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --amber: #d97706;
+      --amber-light: #f59e0b;
+      --amber-dim: #78350f;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 10px;
+    }
+    .container {
+      width: 100%;
+      max-width: 440px;
+      background: linear-gradient(145deg, #162030, #0d1422);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 95vh;
+      padding: 16px;
+      position: relative;
+    }
+    .header-bar { border-bottom: 1px solid var(--border); padding-bottom: 8px; margin-bottom: 12px; font-size: 11px; }
+    .btn {
+      background: #1e293b; color: var(--text); border: 1px solid #334155;
+      padding: 6px 10px; border-radius: 6px; cursor: pointer; font-size: 11px; font-weight: bold;
+    }
+    .btn:hover { background: #334155; }
+    .btn-primary {
+      background: var(--amber); color: #050811; border: none; width: 100%; padding: 12px;
+      border-radius: 10px; font-size: 13px; font-weight: bold; cursor: pointer;
+    }
+    .btn-primary:hover { background: var(--amber-light); }
+    .input-box {
+      width: 100%; background: #080d17; border: 1px solid #334155; border-radius: 8px;
+      color: var(--text); padding: 10px; font-size: 14px; text-align: center; font-weight: bold; margin-bottom: 8px;
+    }
+    .input-box:focus { outline: 1px solid var(--amber); }
+    .card { background: #0b111e; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 10px; }
+    .hero-stat { font-size: 38px; font-weight: 800; color: var(--amber-light); margin: 6px 0; }
+    .footer-bar { border-top: 1px solid var(--border); padding-top: 10px; margin-top: auto; display: flex; justify-content: space-around; font-size: 11px; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- شريط التحكم العلوي -->
+    <div class="header-bar">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-weight: bold; color: var(--amber-light);">WealthOS v1.5 • النواة المغلقة</span>
+        <span id="lbl-sim-day" style="background: #1e293b; padding: 2px 6px; border-radius: 4px; color: #cbd5e1;">اليوم 1 [مفتوح]</span>
+      </div>
+      <div style="display: flex; justify-content: space-between; gap: 4px;">
+        <div style="display: flex; gap: 4px;">
+          <button onclick="loadPersona('kinan')" class="btn">كنان</button>
+          <button onclick="loadPersona('john')" class="btn">جون</button>
+          <button onclick="loadPersona('owais')" class="btn">أويس</button>
+        </div>
+        <div style="display: flex; gap: 4px;">
+          <button onclick="runAll31StressTests()" class="btn" style="background: #451a03; border-color: #78350f; color: #fde68a;">⚡ إجهاد (31)</button>
+          <button onclick="advanceDay()" id="btn-advance-day" class="btn" style="color: #64748b; cursor: not-allowed;">الغد ⏭️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- مساحة العرض الرئيسية -->
+    <div id="app-viewport" style="flex: 1; display: flex; flex-direction: column; justify-content: center;"></div>
+
+    <!-- شريط التنقل السفلي -->
+    <div class="footer-bar">
+      <button onclick="renderHome()" class="btn" style="background: none; border: none; color: #f1f5f9;">الرئيسية</button>
+      <button onclick="openEveningAudit()" class="btn" style="background: none; border: none;">التدقيق المسائي</button>
+      <button onclick="renderHarvestCard()" class="btn" style="background: none; border: none;">حصاد الأسبوع</button>
+    </div>
+
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. النواة المحاسبية المغلقة تماماً (WEALTH ENGINE v1.5 CORE)
+    // =========================================================================
+    class WealthEngine {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.simDay = 1;
+        this.dayStatus = 'OPEN'; // 'OPEN' | 'SEALED'
+        this.currency = '$';
+        this.baseDailyBurn = 10;
+        
+        this.buckets = {
+          operatingCash: 0,
+          protectedCash: 0,
+          earmarkedCash: 0
+        };
+
+        this.obligations = []; // [ { id, title, outstanding, critical } ]
+        this.sinkingFund = null; // { obligationId, title, targetAmount, fundedAmount, daysRemaining }
+
+        this.rawSafetyDays = 0; // القيمة العائمة الحقيقية غير المقربة
+        this.safetyDays = 0;
+        this.criticalGap = 0;
+        this.bastion = 'GROUND_ZERO';
+
+        this.ledger = [];
+        this.dailySnapshots = [];
+        this.weekOpeningSnapshot = null;
+      }
+
+      getDebtBurden() {
+        return this.obligations.reduce((sum, o) => sum + o.outstanding, 0);
+      }
+
+      getCriticalDue() {
+        return this.obligations
+          .filter(o => o.critical)
+          .reduce((sum, o) => sum + o.outstanding, 0);
+      }
+
+      getTotalLiquid() {
+        return this.buckets.operatingCash + this.buckets.protectedCash + this.buckets.earmarkedCash;
+      }
+
+      getSafetyEligibleLiquidity() {
+        return this.buckets.operatingCash + this.buckets.protectedCash;
+      }
+
+      getSinkingDailyTarget() {
+        if (!this.sinkingFund) return 0;
+        const remaining = Math.max(0, this.sinkingFund.targetAmount - this.sinkingFund.fundedAmount);
+        if (remaining === 0) return 0;
+        const days = Math.max(1, this.sinkingFund.daysRemaining);
+        return Number((remaining / days).toFixed(1));
+      }
+
+      // تقييم الحالة بناءً على القيم الحسابية الخام دون تقريب
+      reevaluateState() {
+        const eligibleLiquid = this.getSafetyEligibleLiquidity();
+        const critDue = this.getCriticalDue();
+        const netSurplus = eligibleLiquid - critDue;
+
+        if (netSurplus < 0) {
+          this.criticalGap = Math.abs(netSurplus);
+          this.rawSafetyDays = 0;
+          this.safetyDays = 0;
+          this.bastion = 'GROUND_ZERO';
+        } else if (netSurplus === 0) {
+          this.criticalGap = 0;
+          this.rawSafetyDays = 0;
+          this.safetyDays = 0;
+          this.bastion = 'BREAK_EVEN';
+        } else {
+          this.criticalGap = 0;
+          this.rawSafetyDays = netSurplus / this.baseDailyBurn;
+          this.safetyDays = this.rawSafetyDays;
+
+          // حدود الحصون تُفحص بالقيمة الحقيقية الدقيقة
+          if (this.rawSafetyDays < 1.0) this.bastion = 'TONIGHT_BASTION';
+          else if (this.rawSafetyDays < 2.0) this.bastion = 'TOMORROW_BASTION';
+          else if (this.rawSafetyDays < 7.0) this.bastion = 'WEEK_BASTION';
+          else if (this.rawSafetyDays < 30.0) this.bastion = 'BUILDING_MONTH';
+          else this.bastion = 'MONTH_BASTION';
+        }
+      }
+
+      // تسوية صندوق الاستحقاق عند حلول أجله
+      processSinkingMaturity(draftOp, draftProt, draftEarmark, draftObligations, draftSinking, events) {
+        if (!draftSinking || draftSinking.daysRemaining > 0) return { draftEarmark, draftSinking };
+
+        const target = draftObligations.find(o => o.id === draftSinking.obligationId);
+        if (target) {
+          const settlement = Math.min(draftEarmark, draftSinking.fundedAmount, target.outstanding);
+          if (settlement > 0) {
+            draftEarmark -= settlement;
+            target.outstanding -= settlement;
+            events.push({ day: this.simDay, type: 'EARMARK_SETTLED_FOR_OBLIGATION', obligationId: target.id, amount: settlement });
+          }
+
+          // تحول أي عجز غير ممول إلى التزام حرج فوراً
+          if (target.outstanding > 0) {
+            target.critical = true;
+            events.push({ day: this.simDay, type: 'UNFUNDED_DEFICIT_SURFACED', obligationId: target.id, amount: target.outstanding });
+          }
+        }
+
+        return { draftEarmark, draftSinking: null };
+      }
+
+      takeWeekOpeningSnapshot() {
+        this.reevaluateState();
+        this.weekOpeningSnapshot = {
+          rawSafetyDays: this.rawSafetyDays,
+          safetyDays: this.safetyDays,
+          criticalGap: this.criticalGap,
+          debtBurden: this.getDebtBurden(),
+          criticalDue: this.getCriticalDue(),
+          totalLiquid: this.getTotalLiquid(),
+          safetyEligibleLiquid: this.getSafetyEligibleLiquidity(),
+          bastion: this.bastion
+        };
+      }
+
+      takeSnapshot() {
+        this.dailySnapshots.push({
+          day: this.simDay,
+          rawSafetyDays: this.rawSafetyDays,
+          safetyDays: this.safetyDays,
+          criticalGap: this.criticalGap,
+          debtBurden: this.getDebtBurden(),
+          criticalDue: this.getCriticalDue(),
+          totalLiquid: this.getTotalLiquid(),
+          safetyEligibleLiquid: this.getSafetyEligibleLiquidity(),
+          earmarkedCash: this.buckets.earmarkedCash,
+          bastion: this.bastion,
+          dayStatus: this.dayStatus
+        });
+      }
+
+      // التحقق الصارم وتنفيذ المعاملة الذرية
+      commitAudit(audit) {
+        if (this.dayStatus === 'SEALED') {
+          throw new Error('DAY_ALREADY_SEALED: لا يمكن تكرار التدقيق في يوم مختوم.');
+        }
+
+        // فحص صحة المدخلات ورفض القيم السالبة أو غير الرقمية
+        const numericInputs = [
+          audit.income, audit.spend, audit.protectedSaved,
+          audit.earmarkedAllocated, audit.cashLoanTaken, audit.creditExpenseAdded
+        ];
+        for (const num of numericInputs) {
+          if (typeof num !== 'number' || isNaN(num) || num < 0) {
+            throw new Error('VALIDATION_ERROR: يمنع إدخال مبالغ سالبة أو غير عددية في السجل.');
+          }
+        }
+
+        if (audit.spend === undefined || audit.spend === null) {
+          throw new Error('VALIDATION_ERROR: يجب تحديد مبلغ المصروف صراحة.');
+        }
+
+        const pre = {
+          safetyDays: this.safetyDays,
+          rawSafetyDays: this.rawSafetyDays,
+          criticalGap: this.criticalGap,
+          debtBurden: this.getDebtBurden(),
+          criticalDue: this.getCriticalDue(),
+          protectedCash: this.buckets.protectedCash,
+          totalLiquid: this.getTotalLiquid(),
+          bastion: this.bastion
+        };
+
+        // مسودة عمل منعزلة تماماً (Deep Copy)
+        let draftOp = this.buckets.operatingCash;
+        let draftProt = this.buckets.protectedCash;
+        let draftEarmark = this.buckets.earmarkedCash;
+        let draftObligations = JSON.parse(JSON.stringify(this.obligations));
+        let draftSinking = this.sinkingFund ? JSON.parse(JSON.stringify(this.sinkingFund)) : null;
+
+        const proposedEvents = [];
+
+        // 1. القروض النقدية
+        if (audit.cashLoanTaken > 0) {
+          draftOp += audit.cashLoanTaken;
+          draftObligations.push({
+            id: `loan_d${this.simDay}_${Date.now()}`,
+            title: 'سلفة نقدية مستجدة',
+            outstanding: audit.cashLoanTaken,
+            critical: false
+          });
+          proposedEvents.push({ day: this.simDay, type: 'CASH_LOAN_RECEIVED', amount: audit.cashLoanTaken });
+        }
+
+        // 2. الشراء بالدين
+        if (audit.creditExpenseAdded > 0) {
+          draftObligations.push({
+            id: `cred_d${this.simDay}_${Date.now()}`,
+            title: 'دين مشتريات على الدفتر',
+            outstanding: audit.creditExpenseAdded,
+            critical: false
+          });
+          proposedEvents.push({
+            day: this.simDay,
+            type: 'CREDIT_PURCHASE_INCURRED',
+            amount: audit.creditExpenseAdded,
+            classification: audit.creditClassification || 'ESSENTIAL'
+          });
+        }
+
+        // 3. الإيراد
+        if (audit.income > 0) {
+          draftOp += audit.income;
+          proposedEvents.push({ day: this.simDay, type: 'INCOME_RECEIVED', amount: audit.income });
+        }
+
+        // 4. تجنيب الاستحقاق (رفض التعديل الصامت مع فرض سقف الحاجة)
+        let executedEarmark = 0;
+        if (audit.earmarkedAllocated > 0 && draftSinking) {
+          if (audit.earmarkedAllocated > draftOp) {
+            throw new Error(`TRANSPARENCY_VIOLATION: المبلغ المطلوب تجنيبه (${audit.earmarkedAllocated}) يتجاوز النقد التشغيلي المتاح (${draftOp}).`);
+          }
+          const remainingNeeded = Math.max(0, draftSinking.targetAmount - draftSinking.fundedAmount);
+          executedEarmark = Math.min(audit.earmarkedAllocated, remainingNeeded);
+          
+          if (executedEarmark > 0) {
+            draftOp -= executedEarmark;
+            draftEarmark += executedEarmark;
+            draftSinking.fundedAmount += executedEarmark;
+            proposedEvents.push({ day: this.simDay, type: 'CASH_EARMARKED', amount: executedEarmark });
+          }
+        }
+
+        // 5. عزل وعاء الأمان
+        let executedProtected = 0;
+        if (audit.protectedSaved > 0) {
+          if (audit.protectedSaved > draftOp) {
+            throw new Error(`TRANSPARENCY_VIOLATION: المبلغ المطلوب عزله (${audit.protectedSaved}) يتجاوز النقد التشغيلي (${draftOp}).`);
+          }
+          executedProtected = audit.protectedSaved;
+          draftOp -= executedProtected;
+          draftProt += executedProtected;
+          proposedEvents.push({ day: this.simDay, type: 'CASH_TRANSFERRED', from: 'operating', to: 'protected', amount: executedProtected });
+        }
+
+        // 6. المصروفات وسياسة السحب الصارمة
+        let protectedDrained = 0;
+        let operatingDrained = 0;
+
+        if (audit.spend > 0) {
+          if (audit.spendClassification === 'DISCRETIONARY') {
+            if (audit.spend > draftOp) {
+              throw new Error(`DISCRETIONARY_CANNOT_DRAIN_PROTECTED: المصروف الكمالي (${audit.spend}) يتجاوز النقد التشغيلي (${draftOp}). يمنع المساس بالوعاء المحمي.`);
+            }
+            draftOp -= audit.spend;
+            operatingDrained = audit.spend;
+          } else {
+            const totalSpendable = draftOp + draftProt;
+            if (audit.spend > totalSpendable) {
+              throw new Error(`INSUFFICIENT_LIQUIDITY: المصروف (${audit.spend}) يتجاوز السيولة النقدية المتاحة (${totalSpendable}).`);
+            }
+
+            if (draftOp >= audit.spend) {
+              draftOp -= audit.spend;
+              operatingDrained = audit.spend;
+            } else {
+              operatingDrained = draftOp;
+              const remainder = audit.spend - operatingDrained;
+              draftOp = 0;
+              draftProt -= remainder;
+              protectedDrained = remainder;
+            }
+          }
+
+          proposedEvents.push({
+            day: this.simDay,
+            type: 'EXPENSE_INCURRED',
+            amount: audit.spend,
+            classification: audit.spendClassification,
+            operatingDrained,
+            protectedDrained
+          });
+        }
+
+        // 7. سداد الالتزامات مع حفظ النقد وسقف السداد
+        let executedDebtPaid = 0;
+        let targetObligationTitle = "";
+
+        if (audit.debtPayment && audit.debtPayment.amount > 0) {
+          if (typeof audit.debtPayment.amount !== 'number' || audit.debtPayment.amount <= 0) {
+            throw new Error('VALIDATION_ERROR: مبلغ سداد الالتزام غير صالح.');
+          }
+
+          const target = draftObligations.find(o => o.id === audit.debtPayment.obligationId);
+          if (!target) {
+            throw new Error(`OBLIGATION_NOT_FOUND: الالتزام المحدد غير مسجل.`);
+          }
+
+          targetObligationTitle = target.title;
+          executedDebtPaid = Math.min(audit.debtPayment.amount, target.outstanding);
+
+          const totalForDebt = draftOp + draftProt;
+          if (executedDebtPaid > totalForDebt) {
+            throw new Error(`INSUFFICIENT_LIQUIDITY_FOR_DEBT: سداد الالتزام المطلوب (${executedDebtPaid}) يتجاوز السيولة المتاحة (${totalForDebt}).`);
+          }
+
+          if (draftOp >= executedDebtPaid) {
+            draftOp -= executedDebtPaid;
+          } else {
+            const rem = executedDebtPaid - draftOp;
+            draftOp = 0;
+            draftProt -= rem;
+          }
+
+          target.outstanding -= executedDebtPaid;
+
+          proposedEvents.push({
+            day: this.simDay,
+            type: 'OBLIGATION_PAID',
+            obligationId: target.id,
+            amount: executedDebtPaid,
+            wasCritical: target.critical
+          });
+        }
+
+        // تثبيت المعاملة الذرية
+        this.buckets.operatingCash = draftOp;
+        this.buckets.protectedCash = draftProt;
+        this.buckets.earmarkedCash = draftEarmark;
+        this.obligations = draftObligations;
+        if (draftSinking) this.sinkingFund = draftSinking;
+
+        for (const ev of proposedEvents) {
+          this.ledger.push(ev);
+        }
+
+        this.dayStatus = 'SEALED';
+        this.ledger.push({ day: this.simDay, type: 'DAILY_AUDIT_COMMITTED' });
+        
+        this.reevaluateState();
+        this.takeSnapshot();
+
+        return {
+          pre,
+          post: {
+            safetyDays: this.safetyDays,
+            rawSafetyDays: this.rawSafetyDays,
+            criticalGap: this.criticalGap,
+            debtBurden: this.getDebtBurden(),
+            criticalDue: this.getCriticalDue(),
+            protectedCash: this.buckets.protectedCash,
+            totalLiquid: this.getTotalLiquid(),
+            bastion: this.bastion
+          },
+          protectedDrained,
+          operatingDrained,
+          executedEarmark,
+          executedProtected,
+          executedDebtPaid,
+          targetObligationTitle
+        };
+      }
+
+      nextDay() {
+        if (this.dayStatus !== 'SEALED') {
+          throw new Error('DAY_NOT_SEALED: لا يمكن الانتقال للغد دون ختم تدقيق اليوم أولاً.');
+        }
+        if (this.simDay >= 7) {
+          throw new Error('WEEK_COMPLETE: اكتمل الأسبوع المحدد (7 أيام).');
+        }
+
+        this.simDay++;
+        this.dayStatus = 'OPEN';
+        
+        // فحص ومعالجة استحقاق صندوق الاستحقاق عند الوصول لموعده
+        if (this.sinkingFund) {
+          this.sinkingFund.daysRemaining--;
+          if (this.sinkingFund.daysRemaining <= 0) {
+            const events = [];
+            const res = this.processSinkingMaturity(
+              this.buckets.operatingCash,
+              this.buckets.protectedCash,
+              this.buckets.earmarkedCash,
+              this.obligations,
+              this.sinkingFund,
+              events
+            );
+            this.buckets.earmarkedCash = res.draftEarmark;
+            this.sinkingFund = res.draftSinking;
+            for (const ev of events) this.ledger.push(ev);
+          }
+        }
+
+        this.reevaluateState();
+      }
+    }
+
+    const engine = new WealthEngine();
+
+    // =========================================================================
+    // 2. حزمة سيناريوهات الإجهاد الـ 31 المستقلة (31 ISOLATED STRESS TESTS)
+    // =========================================================================
+    function runAll31StressTests() {
+      const results = [];
+      function assert(name, condition) {
+        results.push({ name, pass: !!condition });
+      }
+
+      // S1: Earmark Insulation
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 10, protectedCash: 20, earmarkedCash: 50 };
+        t.reevaluateState();
+        assert("1. Earmark Insulation: عزل تام لأموال الإيجار عن SafetyDays", t.safetyDays === 3.0 && t.getTotalLiquid() === 80);
+      }
+
+      // S2: Sinking Target Initial
+      {
+        const t = new WealthEngine();
+        t.sinkingFund = { obligationId: 'ob1', title: 'إيجار', targetAmount: 150, fundedAmount: 0, daysRemaining: 15 };
+        assert("2. Sinking Initial Target: الهدف اليومي المبدئي 10", t.getSinkingDailyTarget() === 10);
+      }
+
+      // S3: Sinking Recomputed Progression
+      {
+        const t = new WealthEngine();
+        t.sinkingFund = { obligationId: 'ob1', title: 'إيجار', targetAmount: 150, fundedAmount: 0, daysRemaining: 15 };
+        t.commitAudit({ income: 50, earmarkedAllocated: 50, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        t.nextDay();
+        assert("3. Sinking Recomputed: إعادة الحساب بدقة (100/14 = 7.1)", t.getSinkingDailyTarget() === 7.1);
+      }
+
+      // S4: Sinking Overfunding Cap
+      {
+        const t = new WealthEngine();
+        t.buckets.operatingCash = 100;
+        t.sinkingFund = { obligationId: 'ob1', title: 'إيجار', targetAmount: 150, fundedAmount: 140, daysRemaining: 10 };
+        const impact = t.commitAudit({ income: 0, earmarkedAllocated: 50, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("4. Sinking Overfunding Cap: إيقاف التمويل عند الحد الأقصى (10 فقط)", impact.executedEarmark === 10 && t.sinkingFund.fundedAmount === 150 && t.getSinkingDailyTarget() === 0);
+      }
+
+      // S5: Atomic Rollback on Spend Error
+      {
+        const t = new WealthEngine();
+        t.buckets.operatingCash = 10;
+        let thrown = false;
+        try {
+          t.commitAudit({ income: 20, earmarkedAllocated: 0, protectedSaved: 0, spend: 100, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { thrown = true; }
+        assert("5. Atomic Rollback: رفض الصرف وعدم تعديل الحالة نهائياً", thrown && t.buckets.operatingCash === 10 && t.ledger.length === 0 && t.dayStatus === 'OPEN');
+      }
+
+      // S6: Discretionary Shield
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 10, protectedCash: 50, earmarkedCash: 0 };
+        let thrown = false;
+        try {
+          t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 20, spendClassification: 'DISCRETIONARY', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { thrown = true; }
+        assert("6. Discretionary Protected Shield: حظر سحب الكماليات من وعاء الأمان", thrown && t.buckets.protectedCash === 50 && t.buckets.operatingCash === 10);
+      }
+
+      // S7: Emergency Attribution
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 20, protectedCash: 30, earmarkedCash: 0 };
+        const impact = t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 35, spendClassification: 'EMERGENCY', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("7. Emergency Attribution: سحب 20 تشغيلي و 15 فقط من المحمي", impact.operatingDrained === 20 && impact.protectedDrained === 15 && t.buckets.protectedCash === 15);
+      }
+
+      // S8: Essential Drain Permission
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 5, protectedCash: 25, earmarkedCash: 0 };
+        const impact = t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 15, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("8. Essential Drain: السماح بسحب الضروريات من المحمي عند نفاد التشغيل", impact.operatingDrained === 5 && impact.protectedDrained === 10 && t.buckets.protectedCash === 15);
+      }
+
+      // S9: Credit Purchase Classification in Ledger
+      {
+        const t = new WealthEngine();
+        t.buckets.operatingCash = 15;
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 40, creditClassification: 'EMERGENCY' });
+        const credEvent = t.ledger.find(e => e.type === 'CREDIT_PURCHASE_INCURRED');
+        assert("9. Credit Classification: توثيق التصنيف الاقتصادي للشراء بالدين", t.getDebtBurden() === 40 && t.buckets.operatingCash === 15 && credEvent && credEvent.classification === 'EMERGENCY');
+      }
+
+      // S10: Cash Loan Symmetry
+      {
+        const t = new WealthEngine();
+        t.buckets.operatingCash = 10;
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 50, creditExpenseAdded: 0 });
+        assert("10. Cash Loan Symmetry: تطابق زيادة النقد والالتزام (+50)", t.buckets.operatingCash === 60 && t.getDebtBurden() === 50);
+      }
+
+      // S11: Critical Repayment Neutrality
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 30, protectedCash: 0, earmarkedCash: 0 };
+        t.obligations = [{ id: 'crit_1', title: 'التزام حرج', outstanding: 50, critical: true }];
+        t.reevaluateState();
+        const preGap = t.criticalGap;
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: { obligationId: 'crit_1', amount: 20 }, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("11. Repayment Neutrality: ثبات فجوة الخطر عند السداد من الكاش المتاح", preGap === 20 && t.criticalGap === 20 && t.getCriticalDue() === 30 && t.buckets.operatingCash === 10);
+      }
+
+      // S12: Sub-Zero True Climb
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 10, protectedCash: 0, earmarkedCash: 0 };
+        t.obligations = [{ id: 'crit_rent', title: 'إيجار متأخر', outstanding: 40, critical: true }];
+        t.reevaluateState();
+        t.commitAudit({ income: 30, earmarkedAllocated: 0, protectedSaved: 0, spend: 5, spendClassification: 'ESSENTIAL', debtPayment: { obligationId: 'crit_rent', amount: 25 }, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("12. True Climb: انكماش فجوة الخطر بفضل فائض الكسب الصافي", t.criticalGap === 5 && t.getCriticalDue() === 15 && t.buckets.operatingCash === 10);
+      }
+
+      // S13: Day Seal Idempotency
+      {
+        const t = new WealthEngine();
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        let secondBlocked = false;
+        try {
+          t.commitAudit({ income: 10, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { secondBlocked = true; }
+        assert("13. Seal Idempotency: حظر تكرار التدقيق في اليوم المختوم", secondBlocked && t.dayStatus === 'SEALED');
+      }
+
+      // S14: Unsealed Advance Day Guard
+      {
+        const t = new WealthEngine();
+        let unsealedBlocked = false;
+        try {
+          t.nextDay();
+        } catch (e) { unsealedBlocked = true; }
+        assert("14. Advance Guard: منع الانتقال للغد دون ختم اليوم الحالي", unsealedBlocked && t.simDay === 1);
+      }
+
+      // S15: Sealed Advance Progression
+      {
+        const t = new WealthEngine();
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        t.nextDay();
+        assert("15. Advance Progression: الانتقال الناجح وفتح اليوم التالي", t.simDay === 2 && t.dayStatus === 'OPEN');
+      }
+
+      // S16: Zero-Income Day Audit
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 30, protectedCash: 0, earmarkedCash: 0 };
+        t.reevaluateState();
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 10, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("16. Zero-Income Day: استيعاب كفاف اليوم وتراجع الأمان إلى 2.0 يوم", t.safetyDays === 2.0 && t.buckets.operatingCash === 20);
+      }
+
+      // S17: Break-Even State
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 25, protectedCash: 0, earmarkedCash: 0 };
+        t.obligations = [{ id: 'b_even', title: 'دين عاجل', outstanding: 25, critical: true }];
+        t.reevaluateState();
+        assert("17. Break-Even State: استقرار التعادل عند الصفر تماماً", t.bastion === 'BREAK_EVEN' && t.criticalGap === 0 && t.safetyDays === 0);
+      }
+
+      // S18: Transparency Over-Allocation Guard
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 20, protectedCash: 0, earmarkedCash: 0 };
+        let rejected = false;
+        try {
+          t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 50, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { rejected = true; }
+        assert("18. Transparency Guard: رفض العزل المتجاوز للنقد التشغيلي دون قص صامت", rejected && t.buckets.protectedCash === 0 && t.buckets.operatingCash === 20);
+      }
+
+      // S19: Debt Overpayment Cap & Cash Conservation
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 100, protectedCash: 0, earmarkedCash: 0 };
+        t.obligations = [{ id: 'ob_debt', title: 'سلفة', outstanding: 20, critical: false }];
+        const impact = t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: { obligationId: 'ob_debt', amount: 80 }, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("19. Overpayment Cap: سداد 20 فقط وسحب 20 كاش بدقة مع بقاء 80 نقد", impact.executedDebtPaid === 20 && t.buckets.operatingCash === 80 && t.getDebtBurden() === 0);
+      }
+
+      // S20: Obligation Target Integrity
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 50, protectedCash: 0, earmarkedCash: 0 };
+        t.obligations = [
+          { id: 'rent_crit', title: 'إيجار حرج', outstanding: 30, critical: true },
+          { id: 'shop_debt', title: 'دفتر الدكان', outstanding: 100, critical: false }
+        ];
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: { obligationId: 'shop_debt', amount: 20 }, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        const shopOb = t.obligations.find(o => o.id === 'shop_debt');
+        const rentOb = t.obligations.find(o => o.id === 'rent_crit');
+        assert("20. Target Integrity: سداد الدكان خفضه لـ 80 مع بقاء الإيجار الحرج 30 دون مساس", shopOb.outstanding === 80 && rentOb.outstanding === 30 && t.getCriticalDue() === 30);
+      }
+
+      // S21: Week Opening Baseline Accuracy
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 10, protectedCash: 0, earmarkedCash: 0 };
+        t.takeWeekOpeningSnapshot();
+        t.commitAudit({ income: 10, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        const delta = t.safetyDays - t.weekOpeningSnapshot.safetyDays;
+        assert("21. Week Baseline: احتساب إنجاز اليوم الأول كاملاً في الفارق الأسبوعي (+1.0)", delta === 1.0 && t.weekOpeningSnapshot.safetyDays === 1.0 && t.safetyDays === 2.0);
+      }
+
+      // S22: Deep Rollback Verification
+      {
+        const t = new WealthEngine();
+        t.buckets = { operatingCash: 25, protectedCash: 10, earmarkedCash: 5 };
+        t.obligations = [{ id: 'test_ob', title: 'دين', outstanding: 50, critical: true }];
+        t.sinkingFund = { obligationId: 'test_ob', title: 'إيجار', targetAmount: 100, fundedAmount: 20, daysRemaining: 10 };
+        t.takeWeekOpeningSnapshot();
+        const preJson = JSON.stringify({ buckets: t.buckets, obligations: t.obligations, sinkingFund: t.sinkingFund, dayStatus: t.dayStatus });
+        try {
+          t.commitAudit({ income: 10, earmarkedAllocated: 10, protectedSaved: 5, spend: 200, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) {}
+        const postJson = JSON.stringify({ buckets: t.buckets, obligations: t.obligations, sinkingFund: t.sinkingFund, dayStatus: t.dayStatus });
+        assert("22. Deep Rollback: تطابق تام لكافة كائنات وهياكل الحالة بعد الفشل", preJson === postJson);
+      }
+
+      // S23: Sinking Maturity — Fully Funded
+      {
+        const t = new WealthEngine();
+        t.obligations = [{ id: 'rent_full', title: 'إيجار', outstanding: 100, critical: false }];
+        t.buckets = { operatingCash: 10, protectedCash: 0, earmarkedCash: 100 };
+        t.sinkingFund = { obligationId: 'rent_full', title: 'إيجار', targetAmount: 100, fundedAmount: 100, daysRemaining: 1 };
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        t.nextDay(); // daysRemaining -> 0 -> maturity triggered
+        const rentOb = t.obligations.find(o => o.id === 'rent_full');
+        assert("23. Sinking Maturity Fully Funded: تسوية تامة وتفريغ المجنب والالتزام", rentOb.outstanding === 0 && t.buckets.earmarkedCash === 0 && t.sinkingFund === null);
+      }
+
+      // S24: Sinking Maturity — Partially Funded
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.obligations = [{ id: 'rent_part', title: 'إيجار', outstanding: 150, critical: false }];
+        t.buckets = { operatingCash: 20, protectedCash: 0, earmarkedCash: 80 };
+        t.sinkingFund = { obligationId: 'rent_part', title: 'إيجار', targetAmount: 150, fundedAmount: 80, daysRemaining: 1 };
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        t.nextDay(); // matures: 80 settled, 70 remains and becomes critical!
+        const rentOb = t.obligations.find(o => o.id === 'rent_part');
+        assert("24. Sinking Maturity Partially Funded: تسوية 80 وبروز عجز 70 كالتزام حرج فوراً", rentOb.outstanding === 70 && rentOb.critical === true && t.getCriticalDue() === 70 && t.criticalGap === 50);
+      }
+
+      // S25: Sinking Maturity — Zero Funded
+      {
+        const t = new WealthEngine();
+        t.obligations = [{ id: 'rent_zero', title: 'إيجار', outstanding: 100, critical: false }];
+        t.sinkingFund = { obligationId: 'rent_zero', title: 'إيجار', targetAmount: 100, fundedAmount: 0, daysRemaining: 1 };
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        t.nextDay();
+        const rentOb = t.obligations.find(o => o.id === 'rent_zero');
+        assert("25. Sinking Maturity Zero Funded: تحول المبلغ كاملاً لالتزام حرج (100 حرج)", rentOb.critical === true && t.getCriticalDue() === 100);
+      }
+
+      // S26: Strict Bastion Boundary at 0.996 Days
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 9.96, protectedCash: 0, earmarkedCash: 0 };
+        t.reevaluateState();
+        assert("26. Boundary 0.996 Days: البقاء في TONIGHT_BASTION دون ترقية مبكرة", t.rawSafetyDays === 0.996 && t.bastion === 'TONIGHT_BASTION');
+      }
+
+      // S27: Strict Bastion Boundary at 1.99 Days
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 19.9, protectedCash: 0, earmarkedCash: 0 };
+        t.reevaluateState();
+        assert("27. Boundary 1.99 Days: البقاء في TOMORROW_BASTION دون ترقية لدرع الأسبوع", t.rawSafetyDays === 1.99 && t.bastion === 'TOMORROW_BASTION');
+      }
+
+      // S28: Empty Spend Field Rejection
+      {
+        const t = new WealthEngine();
+        let rejected = false;
+        try {
+          t.commitAudit({ income: 10, earmarkedAllocated: 0, protectedSaved: 0, spend: undefined, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { rejected = true; }
+        assert("28. Empty Spend Rejection: رفض الحقل الفارغ وعدم افتراض الكفاف صامتاً", rejected && t.ledger.length === 0);
+      }
+
+      // S29: Negative and NaN Input Rejection
+      {
+        const t = new WealthEngine();
+        let negRejected = false;
+        let nanRejected = false;
+        try {
+          t.commitAudit({ income: -10, earmarkedAllocated: 0, protectedSaved: 0, spend: 5, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { negRejected = true; }
+        try {
+          t.commitAudit({ income: 10, earmarkedAllocated: 0, protectedSaved: 0, spend: NaN, spendClassification: 'ESSENTIAL', debtPayment: null, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        } catch (e) { nanRejected = true; }
+        assert("29. Negative/NaN Guard: الرفض القاطع للمدخلات السالبة أو غير الرقمية", negRejected && nanRejected);
+      }
+
+      // S30: Non-critical Debt Paid From Protected Impact
+      {
+        const t = new WealthEngine();
+        t.baseDailyBurn = 10;
+        t.buckets = { operatingCash: 0, protectedCash: 50, earmarkedCash: 0 };
+        t.obligations = [{ id: 'shop_1', title: 'دكان', outstanding: 40, critical: false }];
+        t.commitAudit({ income: 0, earmarkedAllocated: 0, protectedSaved: 0, spend: 0, spendClassification: 'ESSENTIAL', debtPayment: { obligationId: 'shop_1', amount: 20 }, cashLoanTaken: 0, creditExpenseAdded: 0 });
+        assert("30. Protected Debt Repayment: سحب السداد من المحمي وتراجع الأمان من 5 إلى 3 أيام بدقة", t.buckets.protectedCash === 30 && t.safetyDays === 3.0);
+      }
+
+      // S31: Sinking & Obligation Double Counting Prevention
+      {
+        const t = new WealthEngine();
+        t.obligations = [{ id: 'kenan_rent', title: 'إيجار الورشة', outstanding: 150, critical: false }];
+        t.sinkingFund = { obligationId: 'kenan_rent', title: 'إيجار الورشة', targetAmount: 150, fundedAmount: 0, daysRemaining: 15 };
+        assert("31. Obligation Linkage Integrity: عدم ازدواجية عبء الدين عند ربط الصندوق بالالتزام", t.getDebtBurden() === 150);
+      }
+
+      renderTestResults(results);
+    }
+
+    function renderTestResults(results) {
+      const root = document.getElementById('app-viewport');
+      const allPass = results.every(r => r.pass);
+      
+      root.innerHTML = `
+        <div style="padding: 6px 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 8px;">
+            <span style="font-weight: bold; font-size: 13px;">فحص الإجهاد المحاسبي v1.5</span>
+            <span style="padding: 2px 6px; border-radius: 4px; font-size: 11px; font-weight: bold; background: ${allPass ? '#451a03' : '#1e293b'}; color: ${allPass ? '#fde68a' : '#94a3b8'};">
+              ${allPass ? 'اجتياز تام (31/31) ✓' : 'إخفاق'}
+            </span>
+          </div>
+
+          <div style="max-height: 58vh; overflow-y: auto; font-size: 11px;">
+            ${results.map(r => `
+              <div style="padding: 6px 8px; border-radius: 6px; background: #080d17; border: 1px solid #1e293b; display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <span>${r.name}</span>
+                <span style="font-weight: bold; color: ${r.pass ? 'var(--amber-light)' : '#f87171'};">${r.pass ? 'PASS' : 'FAIL'}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <button onclick="renderHome()" class="btn-primary" style="margin-top: 10px; padding: 8px;">العودة للوحة الحصن</button>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 3. إدارة الشخصيات المعتمدة (كنان، جون، أويس)
+    // =========================================================================
+    function loadPersona(type) {
+      engine.reset();
+      
+      if (type === 'kinan') {
+        engine.baseDailyBurn = 10;
+        engine.buckets = { operatingCash: 25, protectedCash: 10, earmarkedCash: 0 };
+        engine.obligations = [
+          { id: 'kinan_workshop_rent', title: 'إيجار الورشة', outstanding: 150, critical: false }
+        ];
+        engine.sinkingFund = { obligationId: 'kinan_workshop_rent', title: 'إيجار الورشة', targetAmount: 150, fundedAmount: 0, daysRemaining: 15 };
+      } else if (type === 'john') {
+        engine.baseDailyBurn = 8;
+        engine.buckets = { operatingCash: 20, protectedCash: 0, earmarkedCash: 0 };
+        engine.obligations = [
+          { id: 'john_mechanic_due', title: 'ورشة الميكانيك العاجلة', outstanding: 20, critical: true },
+          { id: 'john_shop_tab', title: 'دفتر متفرقات', outstanding: 20, critical: false }
+        ];
+        engine.sinkingFund = null;
+      } else if (type === 'owais') {
+        engine.baseDailyBurn = 7;
+        engine.buckets = { operatingCash: 10, protectedCash: 0, earmarkedCash: 0 };
+        engine.obligations = [
+          { id: 'owais_room_rent', title: 'إيجار الغرفة المتأخر', outstanding: 35, critical: true },
+          { id: 'owais_grocery_tab', title: 'دفتر البقالة', outstanding: 85, critical: false }
+        ];
+        engine.sinkingFund = null;
+      }
+
+      engine.takeWeekOpeningSnapshot();
+      updateTopBar();
+      renderHome();
+    }
+
+    function updateTopBar() {
+      const lbl = document.getElementById('lbl-sim-day');
+      const btn = document.getElementById('btn-advance-day');
+      lbl.innerText = `اليوم ${engine.simDay} [${engine.dayStatus === 'SEALED' ? 'مختوم 🔒' : 'مفتوح'}]`;
+      
+      if (engine.dayStatus === 'SEALED' && engine.simDay < 7) {
+        btn.style.color = '#f1f5f9';
+        btn.style.cursor = 'pointer';
+        btn.style.background = 'var(--amber)';
+      } else {
+        btn.style.color = '#64748b';
+        btn.style.cursor = 'not-allowed';
+        btn.style.background = '#1e293b';
+      }
+    }
+
+    function advanceDay() {
+      try {
+        engine.nextDay();
+        updateTopBar();
+        renderHome();
+      } catch (e) {
+        alert(e.message);
+      }
+    }
+
+    // =========================================================================
+    // 4. الشاشة الرئيسية (Home Dashboard UX)
+    // =========================================================================
+    function renderHome() {
+      const root = document.getElementById('app-viewport');
+      let heroHtml = '';
+      let threatHtml = '';
+      let actionHtml = '';
+
+      const critDue = engine.getCriticalDue();
+      const displayDays = engine.safetyDays.toFixed(1);
+
+      if (engine.bastion === 'GROUND_ZERO') {
+        heroHtml = `
+          <div class="card" style="text-align: center; border-color: var(--amber-dim);">
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">طور كسر القيد (تحت الصفر)</span>
+            <div class="hero-stat" style="color: #fde68a;">${engine.criticalGap} <span style="font-size: 16px; font-weight: normal;">${engine.currency}</span></div>
+            <p style="font-size: 11px; color: var(--text-muted);">فجوة الخطر الفورية لبلوغ أرضية الصفر</p>
+          </div>
+        `;
+        threatHtml = `
+          <div class="card" style="font-size: 11px; color: #cbd5e1;">
+            ⚖️ <strong>مطالبة عاجلة:</strong> يضغط عليك التزام بقيمة ${critDue} ${engine.currency} مستحق فوراً.
+          </div>
+        `;
+        actionHtml = `احمِ ضروريات اليوم، وسجّل أي مبلغ تستطيع توجيهه نحو فجوة الخطر.`;
+      } else if (engine.bastion === 'BREAK_EVEN') {
+        heroHtml = `
+          <div class="card" style="text-align: center;">
+            <span style="font-size: 11px; color: var(--text-muted); font-weight: bold;">أرضية الصمود</span>
+            <div class="hero-stat" style="color: #f1f5f9; font-size: 32px;">نقطة الصفر</div>
+            <p style="font-size: 11px; color: var(--text-muted);">التوازن مكتمل، لكن لا يوجد احتياطي حر بعد</p>
+          </div>
+        `;
+        threatHtml = `
+          <div class="card" style="font-size: 11px; color: #cbd5e1;">
+            🛡️ <strong>التوازن صلب:</strong> غطيت التزاماتك العاجلة بالكامل؛ لا توجد فجوة خطر حالياً.
+          </div>
+        `;
+        actionHtml = `اعزل أول درهم متاح لبناء أول 24 ساعة أمان في حصن الغد.`;
+      } else {
+        heroHtml = `
+          <div class="card" style="text-align: center;">
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">حصن الأمان المستقل</span>
+            <div class="hero-stat">${displayDays} <span style="font-size: 16px; font-weight: normal;">أيام</span></div>
+            <p style="font-size: 11px; color: var(--text-muted);">أيام كفاف مغطاة من السيولة المؤهلة للأمان</p>
+          </div>
+        `;
+
+        if (engine.sinkingFund) {
+          const tgt = engine.getSinkingDailyTarget();
+          threatHtml = `
+            <div class="card" style="font-size: 11px; color: #cbd5e1;">
+              ⏳ <strong>مخصص ${engine.sinkingFund.title}:</strong> تم تجنيب ${engine.sinkingFund.fundedAmount}/${engine.sinkingFund.targetAmount} ${engine.currency}. مطلوب اليوم: <strong>${tgt} ${engine.currency}</strong> (بقي ${engine.sinkingFund.daysRemaining} يوماً).
+            </div>
+          `;
+        } else {
+          threatHtml = `
+            <div class="card" style="font-size: 11px; color: var(--text-muted);">
+              🛡️ <strong>الحصن مستقر:</strong> لا توجد التزامات دورية تضغط على الأيام القادمة.
+            </div>
+          `;
+        }
+        actionHtml = `اعزل حصة الأمان أولاً في وعاء محمي قبل فتح المحفظة لأي مصروف اليوم.`;
+      }
+
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; font-size: 11px; text-align: center; background: #080d17; padding: 6px; border-radius: 8px; border: 1px solid var(--border);">
+            <div>تشغيلي: <strong style="display: block; color: #f1f5f9;">${engine.buckets.operatingCash}${engine.currency}</strong></div>
+            <div>محمي: <strong style="display: block; color: var(--amber-light);">${engine.buckets.protectedCash}${engine.currency}</strong></div>
+            <div>مجنب: <strong style="display: block; color: #94a3b8;">${engine.buckets.earmarkedCash}${engine.currency}</strong></div>
+          </div>
+
+          ${heroHtml}
+          ${threatHtml}
+
+          <div class="card">
+            <div style="font-size: 11px; color: var(--amber-light); font-weight: bold; margin-bottom: 2px;">الخطوة الوحيدة المطلوبة اليوم:</div>
+            <div style="font-size: 12px; color: #cbd5e1; line-height: 1.4;">${actionHtml}</div>
+          </div>
+
+          <button onclick="openEveningAudit()" class="btn-primary" style="background: #1e293b; color: var(--amber-light); border: 1px solid var(--amber-dim);">
+            🛡️️ ${engine.dayStatus === 'SEALED' ? 'مراجعة ختم اليوم (مغلق)' : 'تسجيل حركة اليوم (التدقيق المسائي)'}
+          </button>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 5. تدفق التدقيق المسائي الموجه والصارم
+    // =========================================================================
+    let draft = {
+      income: 0,
+      cashLoanTaken: 0,
+      creditExpenseAdded: 0,
+      creditClassification: 'ESSENTIAL',
+      earmarkedAllocated: 0,
+      protectedSaved: 0,
+      spend: null,
+      spendClassification: 'ESSENTIAL',
+      debtPayment: null
+    };
+
+    function openEveningAudit() {
+      if (engine.dayStatus === 'SEALED') {
+        alert("هذا اليوم مختوم بالفعل ومسجل في السجل الحتمي. استخدم زر 'الغد' للمتابعة.");
+        return;
+      }
+      draft = {
+        income: 0,
+        cashLoanTaken: 0,
+        creditExpenseAdded: 0,
+        creditClassification: 'ESSENTIAL',
+        earmarkedAllocated: 0,
+        protectedSaved: 0,
+        spend: null,
+        spendClassification: 'ESSENTIAL',
+        debtPayment: null
+      };
+      renderAuditStepIncome();
+    }
+
+    function renderAuditStepIncome() {
+      const root = document.getElementById('app-viewport');
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">التدقيق المسائي • 1 من 4</span>
+            <h3 style="font-size: 15px; font-weight: bold; margin: 4px 0 10px 0;">كم دخل جيبك اليوم من كسب وعمل؟</h3>
+            <input type="number" id="in-inc" placeholder="0" class="input-box" style="font-size: 20px;">
+            <button onclick="document.getElementById('in-inc').value=0; nextFromIncome();" class="btn" style="width: 100%; padding: 8px;">لم أعمل اليوم / صفر كسب</button>
+          </div>
+          <button onclick="nextFromIncome()" class="btn-primary" style="margin-top: 10px;">المتابعة ←</button>
+        </div>
+      `;
+    }
+
+    function nextFromIncome() {
+      const raw = document.getElementById('in-inc').value;
+      const parsed = raw === '' ? 0 : parseFloat(raw);
+      if (isNaN(parsed) || parsed < 0) {
+        alert("يرجى إدخال رقم موجب صالح للدخل.");
+        return;
+      }
+      draft.income = parsed;
+      if (engine.sinkingFund) {
+        renderAuditStepEarmark();
+      } else if (draft.income > 0 || engine.buckets.operatingCash > 0) {
+        renderAuditStepProtect();
+      } else {
+        renderAuditStepSpend();
+      }
+    }
+
+    function renderAuditStepEarmark() {
+      const root = document.getElementById('app-viewport');
+      const dailyTgt = engine.getSinkingDailyTarget();
+      const projectedOperating = engine.buckets.operatingCash + draft.income;
+
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">التدقيق المسائي • تجنيب الاستحقاق</span>
+            <h3 style="font-size: 15px; font-weight: bold; margin: 4px 0 2px 0;">مخصص ${engine.sinkingFund.title}</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">المطلوب لليوم: <strong>${dailyTgt} ${engine.currency}</strong> (التشغيلي المتاح: ${projectedOperating} ${engine.currency})</p>
+            <input type="number" id="in-earmark" placeholder="${dailyTgt}" class="input-box">
+            <button onclick="draft.earmarkedAllocated=0; nextFromEarmark();" class="btn" style="width: 100%; padding: 8px;">لم أجنّب للإيجار اليوم</button>
+          </div>
+          <button onclick="validateEarmarkAndNext(${projectedOperating})" class="btn-primary" style="margin-top: 10px;">المتابعة ←</button>
+        </div>
+      `;
+    }
+
+    function validateEarmarkAndNext(projectedOperating) {
+      const raw = document.getElementById('in-earmark').value;
+      const val = raw === '' ? 0 : parseFloat(raw);
+      if (isNaN(val) || val < 0) {
+        alert("يرجى إدخال مبلغ تجنيب صالح.");
+        return;
+      }
+      if (val > projectedOperating) {
+        alert(`تنبيه شفافية: المبلغ المطلوب (${val}) يتجاوز النقد التشغيلي (${projectedOperating}).`);
+        return;
+      }
+      draft.earmarkedAllocated = val;
+      nextFromEarmark();
+    }
+
+    function nextFromEarmark() {
+      const remainingOperating = (engine.buckets.operatingCash + draft.income) - draft.earmarkedAllocated;
+      if (remainingOperating > 0) {
+        renderAuditStepProtect(remainingOperating);
+      } else {
+        renderAuditStepSpend();
+      }
+    }
+
+    function renderAuditStepProtect(maxAvailable) {
+      const root = document.getElementById('app-viewport');
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">التدقيق المسائي • عزل الأمان</span>
+            <h3 style="font-size: 15px; font-weight: bold; margin: 4px 0 2px 0;">هل عزلت شيئاً في وعاء الأمان المحمي؟</h3>
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">نقل مال لحساب أو علبة محصنة (المتاح للتحويل: ${maxAvailable || engine.buckets.operatingCash} ${engine.currency}).</p>
+            <input type="number" id="in-prot" placeholder="المبلغ المعزول" class="input-box">
+            <button onclick="draft.protectedSaved=0; renderAuditStepSpend();" class="btn" style="width: 100%; padding: 8px;">لم أعزل شيئاً اليوم</button>
+          </div>
+          <button onclick="validateProtectAndNext(${maxAvailable || engine.buckets.operatingCash})" class="btn-primary" style="margin-top: 10px;">المتابعة ←</button>
+        </div>
+      `;
+    }
+
+    function validateProtectAndNext(maxAvailable) {
+      const raw = document.getElementById('in-prot').value;
+      const val = raw === '' ? 0 : parseFloat(raw);
+      if (isNaN(val) || val < 0) {
+        alert("يرجى إدخال مبلغ عزل صالح.");
+        return;
+      }
+      if (val > maxAvailable) {
+        alert(`تنبيه شفافية: المبلغ المطلوب عزله (${val}) يتجاوز النقد المتاح (${maxAvailable}).`);
+        return;
+      }
+      draft.protectedSaved = val;
+      renderAuditStepSpend();
+    }
+
+    function renderAuditStepSpend() {
+      const root = document.getElementById('app-viewport');
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">التدقيق المسائي • المصاريف اليومية</span>
+            <h3 style="font-size: 15px; font-weight: bold; margin: 4px 0 6px 0;">كم خرج من يدك نقداً لمصاريف البيت؟</h3>
+            <button onclick="applyPresetSpend(${engine.baseDailyBurn})" class="btn" style="width: 100%; padding: 8px; margin-bottom: 8px; color: var(--amber-light); border-color: var(--amber-dim);">
+              ✓ كفاف اليوم المعتاد المؤكد (${engine.baseDailyBurn} ${engine.currency})
+            </button>
+            <input type="number" id="in-sp-amt" placeholder="أو أدخل مبلغاً آخر بدقة" class="input-box">
+            
+            <div class="card" style="margin-top: 6px;">
+              <span style="font-size: 11px; color: var(--text-muted); display: block; margin-bottom: 4px;">طبيعة هذا الصرف:</span>
+              <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px;">
+                <button type="button" onclick="setSpendClass('ESSENTIAL')" id="b-c-ess" class="btn" style="background: #451a03; border-color: var(--amber); color: var(--amber-light);">ضروريات</button>
+                <button type="button" onclick="setSpendClass('EMERGENCY')" id="b-c-em" class="btn">طارئ</button>
+                <button type="button" onclick="setSpendClass('DISCRETIONARY')" id="b-c-disc" class="btn">إضافي</button>
+              </div>
+            </div>
+          </div>
+          <button onclick="nextFromSpend()" class="btn-primary" style="margin-top: 10px;">المتابعة ←</button>
+        </div>
+      `;
+    }
+
+    function applyPresetSpend(val) {
+      document.getElementById('in-sp-amt').value = val;
+      draft.spend = val;
+      draft.spendClassification = 'ESSENTIAL';
+      renderAuditStepDebts();
+    }
+
+    function setSpendClass(c) {
+      draft.spendClassification = c;
+      document.getElementById('b-c-ess').style.background = c === 'ESSENTIAL' ? '#451a03' : '#1e293b';
+      document.getElementById('b-c-em').style.background = c === 'EMERGENCY' ? '#451a03' : '#1e293b';
+      document.getElementById('b-c-disc').style.background = c === 'DISCRETIONARY' ? '#451a03' : '#1e293b';
+    }
+
+    function nextFromSpend() {
+      const raw = document.getElementById('in-sp-amt').value;
+      if (raw === '' && draft.spend === null) {
+        alert("يرجى إدخال مبلغ المصروف صراحة أو الضغط على زر (كفاف اليوم المعتاد المؤكد).");
+        return;
+      }
+      const val = parseFloat(raw);
+      if (isNaN(val) || val < 0) {
+        alert("يرجى إدخال مبلغ مصروف موجب صالح.");
+        return;
+      }
+      draft.spend = val;
+      renderAuditStepDebts();
+    }
+
+    function renderAuditStepDebts() {
+      const root = document.getElementById('app-viewport');
+      const activeObs = engine.obligations.filter(o => o.outstanding > 0);
+
+      let obligationSelectHtml = '';
+      if (activeObs.length > 0) {
+        obligationSelectHtml = `
+          <div style="margin-bottom: 8px;">
+            <span style="font-size: 11px; color: #cbd5e1; font-weight: bold; display: block; margin-bottom: 4px;">1. سداد التزام محدد من السجل:</span>
+            <select id="sel-target-ob" class="input-box" style="font-size: 11px; text-align: right;">
+              <option value="">لم أسدد أي التزام اليوم</option>
+              ${activeObs.map(o => `
+                <option value="${o.id}">${o.title} (${o.critical ? 'حرج' : 'عادي'} - المتبقي: ${o.outstanding}${engine.currency})</option>
+              `).join('')}
+            </select>
+            <input type="number" id="in-ob-pay-amt" placeholder="المبلغ المسدد" class="input-box">
+          </div>
+        `;
+      } else {
+        obligationSelectHtml = `<p style="font-size: 11px; color: var(--text-muted); margin-bottom: 8px;">لا توجد التزامات مسجلة حالياً.</p>`;
+      }
+
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">التدقيق المسائي • الالتزامات والديون</span>
+            <h3 style="font-size: 15px; font-weight: bold; margin: 4px 0 6px 0;">سداد الديون أو التزامات جديدة</h3>
+            
+            <div class="card">${obligationSelectHtml}</div>
+
+            <div class="card">
+              <span style="font-size: 11px; color: #cbd5e1; font-weight: bold; display: block; margin-bottom: 4px;">2. هل نشأت التزامات جديدة اليوم؟</span>
+              <input type="number" id="in-cash-loan" placeholder="سلفة نقدية استلمتها باليد" class="input-box">
+              <input type="number" id="in-cred-exp" placeholder="شراء بالدين على الدفتر" class="input-box">
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: var(--text-muted);">
+                <span>تصنيف الشراء بالدين:</span>
+                <select id="sel-cred-class" style="background: #1e293b; color: #f1f5f9; border-radius: 4px; padding: 2px;">
+                  <option value="ESSENTIAL">ضروريات</option>
+                  <option value="EMERGENCY">طارئ</option>
+                  <option value="DISCRETIONARY">إضافي</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button onclick="executeCommit()" class="btn-primary" style="margin-top: 10px;">ختم اليوم وتثبيت السجل 🛡️</button>
+        </div>
+      `;
+    }
+
+    function executeCommit() {
+      const obSelect = document.getElementById('sel-target-ob');
+      const obPayAmt = document.getElementById('in-ob-pay-amt');
+
+      if (obSelect && obSelect.value && obPayAmt && obPayAmt.value !== '') {
+        const val = parseFloat(obPayAmt.value);
+        if (isNaN(val) || val <= 0) {
+          alert("يرجى إدخال مبلغ سداد موجب صالح.");
+          return;
+        }
+        draft.debtPayment = { obligationId: obSelect.value, amount: val };
+      } else {
+        draft.debtPayment = null;
+      }
+
+      const rawLoan = document.getElementById('in-cash-loan').value;
+      const rawCred = document.getElementById('in-cred-exp').value;
+
+      draft.cashLoanTaken = rawLoan === '' ? 0 : parseFloat(rawLoan);
+      draft.creditExpenseAdded = rawCred === '' ? 0 : parseFloat(rawCred);
+      draft.creditClassification = document.getElementById('sel-cred-class').value || 'ESSENTIAL';
+
+      if (isNaN(draft.cashLoanTaken) || draft.cashLoanTaken < 0 || isNaN(draft.creditExpenseAdded) || draft.creditExpenseAdded < 0) {
+        alert("يرجى إدخال أرقام صالحة للديون المستجدة.");
+        return;
+      }
+
+      try {
+        const impact = engine.commitAudit(draft);
+        updateTopBar();
+        renderImpactSeal(impact);
+      } catch (err) {
+        alert("تنبيه المحرك: " + err.message);
+      }
+    }
+
+    // =========================================================================
+    // 6. بطاقة الختم اللحظي المطهرة من السرد الزائف
+    // =========================================================================
+    function renderImpactSeal(impact) {
+      const root = document.getElementById('app-viewport');
+      const { pre, post, protectedDrained, executedEarmark, executedProtected, executedDebtPaid, targetObligationTitle } = impact;
+
+      let detail = `أُغلق سجل اليوم. أصبحت تغطية الكفاف المسجلة ${post.safetyDays.toFixed(1)} يوم مقارنة بـ ${pre.safetyDays.toFixed(1)} يوم عند بداية اليوم.`;
+
+      if (post.bastion === 'GROUND_ZERO') {
+        const gapDiff = pre.criticalGap - post.criticalGap;
+        if (gapDiff > 0) {
+          detail = `تقلصت فجوة الخطر بمقدار ${gapDiff.toFixed(1)} ${engine.currency}. المتبقي: ${post.criticalGap} ${engine.currency}.`;
+        } else if (executedDebtPaid > 0 && gapDiff === 0) {
+          detail = `سُدد ${executedDebtPaid} ${engine.currency} لـ (${targetObligationTitle}). بقيت فجوة الخطر المسجلة عند ${post.criticalGap} ${engine.currency}.`;
+        } else {
+          detail = `ثبتت فجوة الخطر عند ${post.criticalGap} ${engine.currency}.`;
+        }
+      } else if (draft.spendClassification === 'EMERGENCY') {
+        detail = protectedDrained > 0
+          ? `سُجل مصروف طارئ بقيمة ${draft.spend} ${engine.currency}. سُحب منه ${protectedDrained} ${engine.currency} من الوعاء المحمي.`
+          : `سُجل مصروف طارئ بقيمة ${draft.spend} ${engine.currency} مغطى بالكامل من الكاش التشغيلي.`;
+      }
+
+      let notices = '';
+      if (executedEarmark > 0) notices += `<div>• تجنيب الإيجار: تم قيد ${executedEarmark} ${engine.currency}.</div>`;
+      if (executedProtected > 0) notices += `<div>• عزل الأمان: تم تحويل ${executedProtected} ${engine.currency} للمحمي.</div>`;
+      if (executedDebtPaid > 0) notices += `<div>• سداد التزام: تم سداد ${executedDebtPaid} ${engine.currency} لـ (${targetObligationTitle}).</div>`;
+
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; text-align: center; padding: 10px 0;">
+          <div style="margin: auto 0;">
+            <div style="font-size: 36px; margin-bottom: 6px;">🛡️</div>
+            <h3 style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">تم ختم اليوم وتوثيق السجل</h3>
+            
+            <div class="card" style="text-align: right; font-size: 12px; line-height: 1.4;">
+              <div style="font-weight: bold; color: var(--amber-light); margin-bottom: 2px;">الأثر الحسابي المباشر:</div>
+              <div>${detail}</div>
+            </div>
+
+            ${notices !== '' ? `<div class="card" style="text-align: right; font-size: 11px; color: var(--text-muted);">${notices}</div>` : ''}
+          </div>
+
+          <button onclick="renderHome()" class="btn-primary">العودة للرئيسية</button>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 7. حصاد الأسبوع المشتق من خط الأساس الحقيقي
+    // =========================================================================
+    function renderHarvestCard() {
+      const root = document.getElementById('app-viewport');
+
+      const emergencyDrain = engine.ledger
+        .filter(e => e.type === 'EXPENSE_INCURRED' && e.classification === 'EMERGENCY')
+        .reduce((sum, e) => sum + (e.protectedDrained || 0), 0);
+
+      const totalCashExpenses = engine.ledger
+        .filter(e => e.type === 'EXPENSE_INCURRED')
+        .reduce((sum, e) => sum + e.amount, 0);
+
+      const totalCreditPurchases = engine.ledger
+        .filter(e => e.type === 'CREDIT_PURCHASE_INCURRED')
+        .reduce((sum, e) => sum + e.amount, 0);
+
+      const totalDebtPaid = engine.ledger
+        .filter(e => e.type === 'OBLIGATION_PAID')
+        .reduce((sum, e) => sum + e.amount, 0);
+
+      const totalNewDebt = engine.ledger
+        .filter(e => e.type === 'CASH_LOAN_RECEIVED' || e.type === 'CREDIT_PURCHASE_INCURRED')
+        .reduce((sum, e) => sum + e.amount, 0);
+
+      const openingSnap = engine.weekOpeningSnapshot || { safetyDays: engine.safetyDays, criticalGap: engine.criticalGap };
+      const deltaDays = Number((engine.safetyDays - openingSnap.safetyDays).toFixed(1));
+      const deltaGap = Number((openingSnap.criticalGap - engine.criticalGap).toFixed(1));
+      const sealedDaysCount = engine.dailySnapshots.filter(s => s.dayStatus === 'SEALED').length;
+
+      let headline = "اتساع رقعة الأمان";
+      let proofText = `ارتفعت تغطية الكفاف بمقدار ${deltaDays} يوم مقارنة بلقطة بداية الأسبوع.`;
+
+      if (engine.bastion === 'GROUND_ZERO') {
+        headline = "متابعة فجوة الخطر";
+        proofText = deltaGap > 0
+          ? `تقلصت فجوة الخطر بمقدار ${deltaGap} ${engine.currency} خلال الفترة المسجلة.`
+          : `تم الحفاظ على التوازن في ظل وجود فجوة عجز فورية بمقدار ${engine.criticalGap} ${engine.currency}.`;
+      } else if (emergencyDrain > 0 && totalNewDebt === 0) {
+        headline = "استيعاب صدمة طارئة";
+        proofText = `استُخدم ${emergencyDrain} ${engine.currency} من وعاء الأمان لتغطية ظرف طارئ، ولم يسجل النظام أي دين جديد خلال الأسبوع.`;
+      } else if (deltaDays < 0) {
+        headline = "أسبوع دفاع وتراجع رصيد";
+        proofText = `تراجعت أيام الأمان بمقدار ${Math.abs(deltaDays)} يوم لتغطية متطلبات الفترة.`;
+      }
+
+      root.innerHTML = `
+        <div style="display: flex; flex-direction: column; height: 100%; justify-content: space-between; padding: 6px 0;">
+          <div>
+            <div style="text-align: center; border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 8px;">
+              <span style="font-size: 11px; color: var(--amber-light); font-weight: bold;">برهان السجل الحقيقي • Proof Artifact</span>
+              <h2 style="font-size: 15px; font-weight: bold; margin-top: 2px;">${headline}</h2>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4px; text-align: center; margin-bottom: 8px;">
+              <div class="card" style="margin: 0;">
+                <span style="font-size: 10px; color: var(--text-muted); display: block;">أيام الأمان الحالية</span>
+                <span style="font-size: 14px; font-weight: bold; color: var(--amber-light);">${engine.safetyDays.toFixed(1)} أيام</span>
+              </div>
+              <div class="card" style="margin: 0;">
+                <span style="font-size: 10px; color: var(--text-muted); display: block;">أيام التوثيق والختم</span>
+                <span style="font-size: 14px; font-weight: bold; color: #f1f5f9;">${sealedDaysCount} / ${engine.simDay} أيام</span>
+              </div>
+            </div>
+
+            <div class="card">
+              <div style="font-size: 11px; color: var(--amber-light); font-weight: bold; margin-bottom: 2px;">برهان الأثر المستخرج من السجل:</div>
+              <p style="font-size: 11px; color: #cbd5e1; line-height: 1.4;">${proofText}</p>
+            </div>
+
+            <div class="card" style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+              <div>• الإنفاق الاقتصادي الكلي: <strong style="color: #f1f5f9;">${totalCashExpenses + totalCreditPurchases} ${engine.currency}</strong> (نقدي: ${totalCashExpenses} | دين: ${totalCreditPurchases})</div>
+              <div>• سحب من وعاء الأمان للطوارئ: <strong style="color: #f1f5f9;">${emergencyDrain} ${engine.currency}</strong></div>
+              <div>• ديون والتزامات جديدة: <strong style="color: #f1f5f9;">${totalNewDebt} ${engine.currency}</strong></div>
+              <div>• التزامات تم شطبها وسدادها: <strong style="color: var(--amber-light);">${totalDebtPaid} ${engine.currency}</strong></div>
+            </div>
+          </div>
+
+          <button onclick="triggerShareModal('${headline}')" class="btn" style="width: 100%; padding: 10px;">
+            🛡️ مشاركة وسام الصمود (دون أرقام مالية)
+          </button>
+        </div>
+      `;
+    }
+
+    function triggerShareModal(headline) {
+      const shareText = `بُناة الحصون — وثيقة صمود الأسبوع:\n` +
+        `• الحالة: ${headline}\n` +
+        `• السجل: تم رصد وحماية كفاف البيت في السجل الحتمي بدقة.\n` +
+        `• النتيجة: عرق الجبين محفوظ والغطاء مستقر.\n` +
+        `#WealthOS #الحصانة_المالية`;
+      
+      if (navigator.share) {
+        navigator.share({ title: 'وثيقة الصمود', text: shareText }).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(shareText);
+        alert("تم نسخ نص المشاركة الستير للحافظة:\n\n" + shareText);
+      }
+    }
+
+    // إطلاق شخصية كنان افتراضياً
+    loadPersona('kinan');
+  </script>
+</body>
+</html>
