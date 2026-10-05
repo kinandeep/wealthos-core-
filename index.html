@@ -758,13 +758,13 @@
         assert("25. Sinking Maturity Zero Funded: تحول المبلغ كاملاً لالتزام حرج (100 حرج)", rentOb.critical === true && t.getCriticalDue() === 100);
       }
 
-      // S26: Strict Bastion Boundary at 0.996 Days
+            // S26: Strict Bastion Boundary at 0.996 Days
       {
         const t = new WealthEngine();
         t.baseDailyBurn = 10;
         t.buckets = { operatingCash: 9.96, protectedCash: 0, earmarkedCash: 0 };
         t.reevaluateState();
-        assert("26. Boundary 0.996 Days: البقاء في TONIGHT_BASTION دون ترقية مبكرة", t.rawSafetyDays === 0.996 && t.bastion === 'TONIGHT_BASTION');
+        assert("26. Boundary 0.996 Days: البقاء في TONIGHT_BASTION دون ترقية مبكرة", Math.abs(t.rawSafetyDays - 0.996) < 1e-5 && t.bastion === 'TONIGHT_BASTION');
       }
 
       // S27: Strict Bastion Boundary at 1.99 Days
@@ -773,7 +773,7 @@
         t.baseDailyBurn = 10;
         t.buckets = { operatingCash: 19.9, protectedCash: 0, earmarkedCash: 0 };
         t.reevaluateState();
-        assert("27. Boundary 1.99 Days: البقاء في TOMORROW_BASTION دون ترقية لدرع الأسبوع", t.rawSafetyDays === 1.99 && t.bastion === 'TOMORROW_BASTION');
+        assert("27. Boundary 1.99 Days: البقاء في TOMORROW_BASTION دون ترقية لدرع الأسبوع", Math.abs(t.rawSafetyDays - 1.99) < 1e-5 && t.bastion === 'TOMORROW_BASTION');
       }
 
       // S28: Empty Spend Field Rejection
