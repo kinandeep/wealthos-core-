@@ -4,41 +4,148 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>حَصيف • اعرف وضعك. وابنِ أمانك.</title>
+
 <style>
-:root{--bg:#090e17;--card:#172235;--border:#25334b;--text:#f1f5f9;--muted:#a2b1c6;--teal:#2dd4bf;--rose:#fda4af;--amber:#fbbf24}
+:root{
+  --bg:#090e17;
+  --card:#172235;
+  --border:#25334b;
+  --text:#f1f5f9;
+  --muted:#a2b1c6;
+  --teal:#2dd4bf;
+  --rose:#fda4af;
+  --amber:#fbbf24
+}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,sans-serif;padding:8px;display:flex;justify-content:center;min-height:100vh}
-.container{width:100%;max-width:440px;background:linear-gradient(160deg,#121a29,#0a101d);border:1px solid var(--border);border-radius:18px;padding:14px;min-height:96vh;display:flex;flex-direction:column;box-shadow:0 10px 30px #0006}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,sans-serif;
+  padding:8px;
+  display:flex;
+  justify-content:center;
+  min-height:100vh
+}
+.container{
+  width:100%;
+  max-width:440px;
+  background:linear-gradient(160deg,#121a29,#0a101d);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:14px;
+  min-height:96vh;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 10px 30px #0006
+}
 header{border-bottom:1px solid var(--border);padding-bottom:12px}
 .row{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
 .between{justify-content:space-between}
 .brand{font-size:23px;font-weight:900;color:var(--teal)}
 small,.muted{color:var(--muted);font-size:12px;line-height:1.7}
 button,input,select{font:inherit}
-button{cursor:pointer;color:var(--text);background:#1b2940;border:1px solid #344763;border-radius:9px;padding:10px;font-size:12px;min-height:40px}
+button{
+  cursor:pointer;
+  color:var(--text);
+  background:#1b2940;
+  border:1px solid #344763;
+  border-radius:9px;
+  padding:10px;
+  font-size:12px;
+  min-height:40px
+}
 button:hover{background:#283e5e}
 button:disabled{opacity:.45;cursor:not-allowed}
-.primary{background:#0f766e;border-color:#0f766e;font-weight:bold;flex:1}
+.primary{
+  background:#0f766e;
+  border-color:#0f766e;
+  font-weight:bold;
+  flex:1
+}
 .wide{width:100%}
-.input-box{width:100%;background:#0b111d;color:var(--text);border:1px solid #344763;border-radius:9px;padding:11px;margin:6px 0 12px;text-align:right;font-size:16px}
-.input-box:focus,button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+.input-box{
+  width:100%;
+  background:#0b111d;
+  color:var(--text);
+  border:1px solid #344763;
+  border-radius:9px;
+  padding:11px;
+  margin:6px 0 12px;
+  text-align:right;
+  font-size:16px
+}
+.input-box:focus,button:focus-visible{
+  outline:2px solid var(--teal);
+  outline-offset:2px
+}
 label{font-size:13px;display:block}
-label.check{display:flex;align-items:center;gap:8px;margin:8px 0 16px}
-.card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;margin:10px 0;line-height:1.7}
+label.check{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin:8px 0 16px
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:13px;
+  margin:10px 0;
+  line-height:1.7
+}
 .hero{text-align:center}
-.hero-stat{font-size:42px;font-weight:800;color:var(--teal);margin:5px}
+.hero-stat{
+  font-size:42px;
+  font-weight:800;
+  color:var(--teal);
+  margin:5px
+}
 .danger{color:var(--rose)}
 .warn{color:var(--amber)}
 h2{font-size:18px}
 h3{font-size:15px}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);text-align:center;gap:5px;font-size:12px}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  text-align:center;
+  gap:5px;
+  font-size:12px
+}
 .stats strong{display:block;margin-top:7px}
 main{flex:1;padding:10px 0}
-nav{display:flex;border-top:1px solid var(--border);padding-top:8px;gap:3px;flex-wrap:wrap}
-nav button{flex:1;padding:8px 4px;font-size:11px;background:transparent;border-color:transparent}
+nav{
+  display:flex;
+  border-top:1px solid var(--border);
+  padding-top:8px;
+  gap:3px;
+  flex-wrap:wrap
+}
+nav button{
+  flex:1;
+  padding:8px 4px;
+  font-size:11px;
+  background:transparent;
+  border-color:transparent
+}
 nav .active{color:var(--teal);background:#2dd4bf15}
-.notice{border:1px solid #a16207;padding:10px;border-radius:8px;color:#fde68a;font-size:12px;margin:10px 0}
-.msg{white-space:pre-wrap;padding:12px;border:1px solid #294368;border-radius:12px;margin:10px 0;font-size:13px;line-height:1.8}
+.notice{
+  border:1px solid #a16207;
+  padding:10px;
+  border-radius:8px;
+  color:#fde68a;
+  font-size:12px;
+  margin:10px 0
+}
+.msg{
+  white-space:pre-wrap;
+  padding:12px;
+  border:1px solid #294368;
+  border-radius:12px;
+  margin:10px 0;
+  font-size:13px;
+  line-height:1.8
+}
 .msg.user{background:#17372e;margin-right:20px}
 .chat-box{max-height:48vh;overflow-y:auto}
 .list{max-height:58vh;overflow:auto}
@@ -50,6 +157,7 @@ summary{cursor:pointer;font-size:13px}
 a{color:var(--teal)}
 </style>
 </head>
+
 <body>
 <div class="container">
   <header>
@@ -61,15 +169,26 @@ a{color:var(--teal)}
       </div>
       <small id="day-label"></small>
     </div>
+
     <div class="row between" style="margin-top:10px">
       <div class="row">
         <button id="adjust-btn" onclick="showAdjustment()">✏️ تصحيح</button>
         <button onclick="exportBackupData()">💾 تصدير</button>
-        <button onclick="document.getElementById('import-file').click()">📥 استيراد</button>
+        <button onclick="document.getElementById('import-file').click()">
+          📥 استيراد
+        </button>
       </div>
+
       <button id="next-btn" onclick="advanceDay()">بكرة ⏭</button>
     </div>
-    <input id="import-file" type="file" accept=".json,application/json" hidden onchange="handleBackupFile(event)">
+
+    <input
+      id="import-file"
+      type="file"
+      accept=".json,application/json"
+      hidden
+      onchange="handleBackupFile(event)"
+    >
   </header>
 
   <div id="status" role="status" aria-live="polite"></div>
@@ -91,7 +210,10 @@ a{color:var(--teal)}
 <script>
 'use strict';
 
-// الحسابات النقدية بوحدات صحيحة؛ ملفات JSON تحتفظ بالمبالغ بوحدة العملة.
+/* =========================================================
+   1. الثوابت وأدوات التحقق
+   ========================================================= */
+
 const VERSION = '1.7.0';
 const PRIMARY_KEY = 'haseef_v1_john_data';
 const RECOVERY_KEY = 'haseef_before_import';
@@ -99,7 +221,7 @@ const MAX_MONEY = 1e12;
 const MAX_DAY = 1000000;
 
 const ALLOWED_CURRENCIES = [
-  '$', '€', '£', 'ر.س', 'د.إ', 'د.أ', 'ج.م', 'ل.ل', 'ل.س'
+  '$','€','£','ر.س','د.إ','د.أ','ج.م','ل.ل','ل.س'
 ];
 
 const VALID_BASTIONS = [
@@ -124,27 +246,33 @@ const TYPES = [
   'LEGACY_MIGRATION_INIT'
 ];
 
-const CLASSES = ['ESSENTIAL', 'EMERGENCY', 'DISCRETIONARY'];
+const CLASSES = [
+  'ESSENTIAL',
+  'EMERGENCY',
+  'DISCRETIONARY'
+];
 
 const clone = x => JSON.parse(JSON.stringify(x));
-const own = (o, k) => Object.prototype.hasOwnProperty.call(o, k);
-const object = x => x !== null && typeof x === 'object' && !Array.isArray(x);
+const own = (o,k) => Object.prototype.hasOwnProperty.call(o,k);
+const object = x =>
+  x !== null && typeof x === 'object' && !Array.isArray(x);
 
-function assert(ok, msg) {
+function assert(ok,msg) {
   if (!ok) throw new Error(msg);
 }
 
 function escapeHtml(x) {
-  return String(x ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
+  return String(x ?? '').replace(/[&<>"']/g,c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
   }[c]));
 }
 
-function cents(v, label = 'المبلغ', allowZero = true) {
+/* التحويل إلى وحدات نقدية صحيحة للحساب */
+function cents(v,label='المبلغ',allowZero=true) {
   assert(
     typeof v === 'number' &&
     Number.isFinite(v) &&
@@ -164,25 +292,51 @@ function cents(v, label = 'المبلغ', allowZero = true) {
     label + ': استخدم منزلتين عشريتين كحد أقصى.'
   );
 
-  assert(allowZero || n > 0, label + ': يجب أن يكون أكبر من صفر.');
+  assert(allowZero || n > 0,label + ': يجب أن يكون أكبر من صفر.');
   return n;
 }
 
-function validateAmount(v, label, allowZero = true) {
-  return cents(v, label, allowZero) / 100;
+function validateAmount(v,label,allowZero=true) {
+  return cents(v,label,allowZero) / 100;
 }
 
 function cash(n) {
   assert(
-    Number.isSafeInteger(n) && n >= 0 && n <= MAX_MONEY * 100,
+    Number.isSafeInteger(n) &&
+    n >= 0 &&
+    n <= MAX_MONEY * 100,
     'ناتج الحساب خارج الحدود المدعومة.'
   );
   return n / 100;
 }
 
 function sumMoney(arr) {
-  return cash(arr.reduce((n, v) => n + cents(v), 0));
+  return cash(arr.reduce((n,v) => n + cents(v),0));
 }
+
+function positiveDay(n,max=MAX_DAY) {
+  return Number.isSafeInteger(n) && n >= 1 && n <= max;
+}
+
+function textField(x,max=1000) {
+  return typeof x === 'string' &&
+    x.trim().length > 0 &&
+    x.length <= max;
+}
+
+function validId(x) {
+  return typeof x === 'string' &&
+    /^[A-Za-z0-9_-]{1,160}$/.test(x);
+}
+
+function timestamp(x) {
+  return typeof x === 'string' &&
+    Number.isFinite(Date.parse(x));
+}
+
+/* =========================================================
+   2. الحسابات والحالة الأساسية
+   ========================================================= */
 
 function calc(s) {
   const liquid = sumMoney([
@@ -191,17 +345,24 @@ function calc(s) {
   ]);
 
   const due = sumMoney(
-    s.obligations.filter(o => o.critical).map(o => o.outstanding)
+    s.obligations
+      .filter(o => o.critical)
+      .map(o => o.outstanding)
   );
 
-  const debt = sumMoney(s.obligations.map(o => o.outstanding));
+  const debt = sumMoney(
+    s.obligations.map(o => o.outstanding)
+  );
+
   const net = cents(liquid) - cents(due);
 
   const days = s.isConfigured
-    ? Math.max(net, 0) / cents(s.baseDailyBurn, 'خرجية البيت', false)
+    ? Math.max(net,0) / cents(s.baseDailyBurn,'خرجية البيت',false)
     : 0;
 
-  const gap = s.isConfigured ? Math.max(-net, 0) / 100 : 0;
+  const gap = s.isConfigured
+    ? Math.max(-net,0) / 100
+    : 0;
 
   const bastion =
     gap > 0 ? 'GROUND_ZERO' :
@@ -218,7 +379,10 @@ function calc(s) {
     criticalGap: gap,
     debtBurden: debt,
     criticalDue: due,
-    totalLiquid: sumMoney([liquid, s.buckets.earmarkedCash]),
+    totalLiquid: sumMoney([
+      liquid,
+      s.buckets.earmarkedCash
+    ]),
     safetyEligibleLiquid: liquid,
     bastion
   };
@@ -245,36 +409,25 @@ function blank() {
   };
 }
 
-function positiveDay(n, max = MAX_DAY) {
-  return Number.isSafeInteger(n) && n >= 1 && n <= max;
-}
+/* =========================================================
+   3. فحص اللقطات والحركات والدفتر
+   ========================================================= */
 
-function textField(x, max = 1000) {
-  return typeof x === 'string' &&
-    x.trim().length > 0 &&
-    x.length <= max;
-}
-
-function validId(x) {
-  return typeof x === 'string' && /^[A-Za-z0-9_-]{1,160}$/.test(x);
-}
-
-function timestamp(x) {
-  return typeof x === 'string' && Number.isFinite(Date.parse(x));
-}
-
-function validateSnapshot(w, d, opening = false) {
-  assert(object(w), 'لقطة غير صالحة.');
+function validateSnapshot(w,d,opening=false) {
+  assert(object(w),'لقطة غير صالحة.');
 
   assert(
-    positiveDay(w.day, d.simDay) ||
+    positiveDay(w.day,d.simDay) ||
     (opening && w.day === null && d.historyIncomplete === true),
     'يوم اللقطة غير صالح.'
   );
 
-  assert(VALID_BASTIONS.includes(w.bastion), 'حالة اللقطة غير صالحة.');
+  assert(
+    VALID_BASTIONS.includes(w.bastion),
+    'حالة اللقطة غير صالحة.'
+  );
 
-  for (const k of ['rawSafetyDays', 'safetyDays']) {
+  for (const k of ['rawSafetyDays','safetyDays']) {
     assert(
       typeof w[k] === 'number' &&
       Number.isFinite(w[k]) &&
@@ -290,7 +443,7 @@ function validateSnapshot(w, d, opening = false) {
     'totalLiquid',
     'safetyEligibleLiquid'
   ]) {
-    cents(w[k], 'رصيد اللقطة');
+    cents(w[k],'رصيد اللقطة');
   }
 
   assert(
@@ -302,7 +455,7 @@ function validateSnapshot(w, d, opening = false) {
   assert(
     Math.abs(
       w.criticalGap -
-      Math.max(w.criticalDue - w.safetyEligibleLiquid, 0)
+      Math.max(w.criticalDue - w.safetyEligibleLiquid,0)
     ) < 1e-7,
     'فجوة اللقطة لا تطابق أرصدتها.'
   );
@@ -323,48 +476,67 @@ function validateSnapshot(w, d, opening = false) {
     'MONTH_BASTION';
 
   assert(
-    w.bastion === expected && Math.abs(w.safetyDays - sd) < 1e-7,
+    w.bastion === expected &&
+    Math.abs(w.safetyDays - sd) < 1e-7,
     'تصنيف اللقطة غير متسق.'
   );
 
   if (!opening) {
-    assert(w.dayStatus === 'SEALED', 'اللقطة اليومية يجب أن تكون مغلقة.');
+    assert(
+      w.dayStatus === 'SEALED',
+      'اللقطة اليومية يجب أن تكون مغلقة.'
+    );
   }
 }
 
 function validateState(d) {
   assert(
-    object(d) && d.version === VERSION && d.brand === 'HASEEF',
+    object(d) &&
+    d.version === VERSION &&
+    d.brand === 'HASEEF',
     'إصدار الملف غير مدعوم.'
   );
 
-  assert(typeof d.isConfigured === 'boolean', 'حالة الإعداد غير صالحة.');
-  cents(d.baseDailyBurn, 'خرجية البيت', !d.isConfigured);
+  assert(
+    typeof d.isConfigured === 'boolean',
+    'حالة الإعداد غير صالحة.'
+  );
+
+  cents(d.baseDailyBurn,'خرجية البيت',!d.isConfigured);
 
   assert(
     ALLOWED_CURRENCIES.includes(d.currency),
     'العملة غير مدعومة؛ لم يتم تحويل الأرقام.'
   );
 
-  assert(object(d.buckets), 'أوعية السيولة مفقودة.');
+  assert(object(d.buckets),'أوعية السيولة مفقودة.');
 
-  for (const k of ['operatingCash', 'protectedCash', 'earmarkedCash']) {
-    cents(d.buckets[k], k);
+  for (const k of [
+    'operatingCash',
+    'protectedCash',
+    'earmarkedCash'
+  ]) {
+    cents(d.buckets[k],k);
   }
 
   assert(
-    positiveDay(d.simDay) && ['OPEN', 'SEALED'].includes(d.dayStatus),
+    positiveDay(d.simDay) &&
+    ['OPEN','SEALED'].includes(d.dayStatus),
     'اليوم غير صالح.'
   );
 
-  for (const k of ['obligations', 'ledger', 'dailySnapshots']) {
+  for (const k of [
+    'obligations',
+    'ledger',
+    'dailySnapshots'
+  ]) {
     assert(
       Array.isArray(d[k]) && d[k].length <= 100000,
       'السجل ناقص أو كبير جداً.'
     );
   }
 
-  if (own(d, 'historyIncomplete')) {
+  if (own(d,'historyIncomplete')) {
     assert(
       typeof d.historyIncomplete === 'boolean',
       'علامة الترحيل غير صالحة.'
@@ -378,14 +550,16 @@ function validateState(d) {
       object(o) && validId(o.id) && !ids.has(o.id),
       'معرّف دين غير صالح أو مكرر.'
     );
+
     ids.add(o.id);
 
     assert(
-      textField(o.title, 200) && typeof o.critical === 'boolean',
+      textField(o.title,200) &&
+      typeof o.critical === 'boolean',
       'تفاصيل الدين غير صالحة.'
     );
 
-    cents(o.outstanding, 'الدين');
+    cents(o.outstanding,'الدين');
   }
 
   let previousDay = 0;
@@ -394,7 +568,7 @@ function validateState(d) {
   for (const e of d.ledger) {
     assert(
       object(e) &&
-      positiveDay(e.day, d.simDay) &&
+      positiveDay(e.day,d.simDay) &&
       e.day >= previousDay &&
       TYPES.includes(e.type),
       'تسلسل السجل أو نوع الحركة غير صالح.'
@@ -409,7 +583,7 @@ function validateState(d) {
       'operatingDrained',
       'protectedDrained'
     ]) {
-      if (own(e, k)) cents(e[k], 'مبلغ الحركة');
+      if (own(e,k)) cents(e[k],'مبلغ الحركة');
     }
 
     if ([
@@ -420,23 +594,33 @@ function validateState(d) {
       'EXPENSE_INCURRED',
       'OBLIGATION_PAID'
     ].includes(e.type)) {
-      cents(e.amount, 'مبلغ الحركة', false);
+      cents(e.amount,'مبلغ الحركة',false);
     }
 
-    if (own(e, 'timestamp')) {
-      assert(timestamp(e.timestamp), 'وقت الحركة غير صالح.');
+    if (own(e,'timestamp')) {
+      assert(timestamp(e.timestamp),'وقت الحركة غير صالح.');
     }
 
-    if (own(e, 'critical')) {
-      assert(typeof e.critical === 'boolean', 'تصنيف الدين غير صالح.');
+    if (own(e,'critical')) {
+      assert(
+        typeof e.critical === 'boolean',
+        'تصنيف الدين غير صالح.'
+      );
     }
 
     if (e.type === 'EXPENSE_INCURRED') {
-      assert(CLASSES.includes(e.classification), 'تصنيف مصروف مفقود.');
+      assert(
+        CLASSES.includes(e.classification),
+        'تصنيف مصروف مفقود.'
+      );
 
-      if (own(e, 'operatingDrained') && own(e, 'protectedDrained')) {
+      if (
+        own(e,'operatingDrained') &&
+        own(e,'protectedDrained')
+      ) {
         assert(
-          cents(e.operatingDrained) + cents(e.protectedDrained) ===
+          cents(e.operatingDrained) +
+          cents(e.protectedDrained) ===
           cents(e.amount),
           'مصادر المصروف لا تساوي المبلغ.'
         );
@@ -454,12 +638,15 @@ function validateState(d) {
       cents(e.oldVal);
       cents(e.newVal);
 
-      assert(textField(e.reason) && validId(e.id), 'تصحيح ناقص.');
+      assert(
+        textField(e.reason) && validId(e.id),
+        'تصحيح ناقص.'
+      );
 
       assert(
         (
           e.targetType === 'BUCKET' &&
-          ['operatingCash', 'protectedCash'].includes(e.id)
+          ['operatingCash','protectedCash'].includes(e.id)
         ) ||
         (
           e.targetType === 'CONFIG' &&
@@ -473,7 +660,7 @@ function validateState(d) {
       );
 
       if (e.targetType === 'CONFIG') {
-        cents(e.newVal, 'خرجية البيت', false);
+        cents(e.newVal,'خرجية البيت',false);
       }
     }
 
@@ -486,7 +673,10 @@ function validateState(d) {
     }
 
     if (e.type === 'LEGACY_MIGRATION_INIT') {
-      assert(textField(e.note, 2000), 'ملاحظة الترحيل مفقودة.');
+      assert(
+        textField(e.note,2000),
+        'ملاحظة الترحيل مفقودة.'
+      );
     }
   }
 
@@ -494,8 +684,9 @@ function validateState(d) {
   const snapshotDays = new Set();
 
   for (const w of d.dailySnapshots) {
-    validateSnapshot(w, d);
-    assert(w.day > last, 'لقطات مكررة أو غير مرتبة.');
+    validateSnapshot(w,d);
+    assert(w.day > last,'لقطات مكررة أو غير مرتبة.');
+
     last = w.day;
     snapshotDays.add(w.day);
 
@@ -506,12 +697,12 @@ function validateState(d) {
   }
 
   for (const day of seals) {
-    assert(snapshotDays.has(day), 'ختم يوم دون لقطة.');
+    assert(snapshotDays.has(day),'ختم يوم دون لقطة.');
   }
 
   if (!d.historyIncomplete) {
     for (const day of snapshotDays) {
-      assert(seals.has(day), 'لقطة دون ختم.');
+      assert(seals.has(day),'لقطة دون ختم.');
     }
 
     assert(
@@ -533,16 +724,20 @@ function validateState(d) {
     d.weekOpeningSnapshot !== null &&
     d.weekOpeningSnapshot !== undefined
   ) {
-    validateSnapshot(d.weekOpeningSnapshot, d, true);
+    validateSnapshot(d.weekOpeningSnapshot,d,true);
   }
 
   calc(d);
   return d;
 }
 
-// ترحيل البنى السابقة المعروفة دون تصفير الحقول المالية التالفة.
+/* =========================================================
+   4. ترحيل النسخ السابقة
+   ========================================================= */
+
 function migrateLegacyState(input) {
-  assert(object(input), 'ملف الدفتر غير صالح.');
+  assert(object(input),'ملف الدفتر غير صالح.');
+
   const d = clone(input);
 
   if (d.version === VERSION) {
@@ -550,42 +745,52 @@ function migrateLegacyState(input) {
     return d;
   }
 
-  const known = ['1.6.0', '1.6.1', '1.6.2', '1.6.3'];
+  const known = ['1.6.0','1.6.1','1.6.2','1.6.3'];
 
   assert(
     (known.includes(d.version) && d.brand === 'HASEEF') ||
-    (!own(d, 'version') && !own(d, 'brand')),
+    (!own(d,'version') && !own(d,'brand')),
     'إصدار غير معروف؛ لن تتم إعادة تفسيره تلقائياً.'
   );
 
-  const unversioned = !own(d, 'version');
+  const unversioned = !own(d,'version');
 
   assert(
     object(d.buckets) && Array.isArray(d.obligations),
     'أرصدة أو ديون النسخة السابقة مفقودة.'
   );
 
-  if (!own(d, 'currency') && unversioned) d.currency = '$';
+  if (!own(d,'currency') && unversioned) {
+    d.currency = '$';
+  }
 
-  if (!own(d.buckets, 'earmarkedCash') && unversioned) {
+  if (!own(d.buckets,'earmarkedCash') && unversioned) {
     d.buckets.earmarkedCash = 0;
   }
 
   d.historyIncomplete = true;
 
-  if (!own(d, 'ledger') && unversioned) d.ledger = [];
-  if (!own(d, 'dailySnapshots') && unversioned) d.dailySnapshots = [];
+  if (!own(d,'ledger') && unversioned) {
+    d.ledger = [];
+  }
+
+  if (!own(d,'dailySnapshots') && unversioned) {
+    d.dailySnapshots = [];
+  }
 
   assert(
-    Array.isArray(d.ledger) && Array.isArray(d.dailySnapshots),
+    Array.isArray(d.ledger) &&
+    Array.isArray(d.dailySnapshots),
     'تاريخ النسخة السابقة تالف.'
   );
 
-  if (!own(d, 'weekOpeningSnapshot')) d.weekOpeningSnapshot = null;
+  if (!own(d,'weekOpeningSnapshot')) {
+    d.weekOpeningSnapshot = null;
+  }
 
   if (
     object(d.weekOpeningSnapshot) &&
-    !own(d.weekOpeningSnapshot, 'day')
+    !own(d.weekOpeningSnapshot,'day')
   ) {
     d.weekOpeningSnapshot.day = null;
   }
@@ -594,7 +799,7 @@ function migrateLegacyState(input) {
     if (
       object(e) &&
       e.type === 'EXPENSE_INCURRED' &&
-      !own(e, 'classification')
+      !own(e,'classification')
     ) {
       e.classification = 'ESSENTIAL';
       e.migrationNote =
@@ -616,6 +821,10 @@ function migrateLegacyState(input) {
   return d;
 }
 
+/* =========================================================
+   5. محرك الدفتر والحفظ
+   ========================================================= */
+
 class WealthEngine {
   constructor(storage) {
     this.storage = storage;
@@ -629,7 +838,11 @@ class WealthEngine {
   }
 
   commit(candidate) {
-    assert(!this.blocked, 'الدفتر محمي حتى معالجة مشكلة التحميل.');
+    assert(
+      !this.blocked,
+      'الدفتر محمي حتى معالجة مشكلة التحميل.'
+    );
+
     validateState(candidate);
 
     const raw = JSON.stringify(candidate);
@@ -647,7 +860,7 @@ class WealthEngine {
     );
 
     try {
-      this.storage.setItem(PRIMARY_KEY, raw);
+      this.storage.setItem(PRIMARY_KEY,raw);
     } catch (e) {
       throw new Error(
         'تعذر الحفظ؛ لم تتغير الأرصدة أو حالة اليوم. صدّر نسخة ثم تحقق من مساحة المتصفح.'
@@ -656,6 +869,7 @@ class WealthEngine {
 
     this.state = clone(candidate);
     this.expectedRaw = raw;
+
     return calc(this.state);
   }
 
@@ -667,21 +881,26 @@ class WealthEngine {
     } catch (e) {
       this.blocked = true;
       return {
-        status: 'STORAGE_ERROR',
-        message: 'تعذر الوصول للتخزين المحلي.'
+        status:'STORAGE_ERROR',
+        message:'تعذر الوصول للتخزين المحلي.'
       };
     }
 
     if (raw !== null) {
       try {
         const d = migrateLegacyState(JSON.parse(raw));
+
         this.state = d;
         this.expectedRaw = raw;
         this.blocked = false;
-        return { status: 'OK' };
+
+        return {status:'OK'};
       } catch (e) {
         this.blocked = true;
-        return { status: 'INVALID_DATA', message: e.message };
+        return {
+          status:'INVALID_DATA',
+          message:e.message
+        };
       }
     }
 
@@ -695,17 +914,19 @@ class WealthEngine {
         if (old === null) continue;
 
         const d = migrateLegacyState(JSON.parse(old));
-        this.storage.setItem(PRIMARY_KEY, JSON.stringify(d));
-        this.expectedRaw = JSON.stringify(d);
+        const migratedRaw = JSON.stringify(d);
+
+        this.storage.setItem(PRIMARY_KEY,migratedRaw);
+        this.expectedRaw = migratedRaw;
         this.state = d;
         this.blocked = false;
 
-        return { status: 'OK', migrated: true };
+        return {status:'OK',migrated:true};
       } catch (e) {
         this.blocked = true;
         return {
-          status: 'INVALID_DATA',
-          message: 'تعذر ترحيل دفتر سابق: ' + e.message
+          status:'INVALID_DATA',
+          message:'تعذر ترحيل دفتر سابق: ' + e.message
         };
       }
     }
@@ -713,29 +934,36 @@ class WealthEngine {
     this.state = blank();
     this.expectedRaw = null;
     this.blocked = false;
-    return { status: 'EMPTY' };
+
+    return {status:'EMPTY'};
   }
 
-  setup(op, burn, prot, obligations) {
-    assert(!this.state.isConfigured, 'الدفتر مفتوح بالفعل.');
+  setup(op,burn,prot,obligations) {
+    assert(!this.state.isConfigured,'الدفتر مفتوح بالفعل.');
 
     const d = blank();
+
     d.isConfigured = true;
-    d.baseDailyBurn = validateAmount(burn, 'خرجية البيت', false);
-    d.buckets.operatingCash = validateAmount(op, 'كاش الجيبة');
-    d.buckets.protectedCash = validateAmount(prot, 'الاحتياطي');
+    d.baseDailyBurn = validateAmount(burn,'خرجية البيت',false);
+    d.buckets.operatingCash = validateAmount(op,'كاش الجيبة');
+    d.buckets.protectedCash = validateAmount(prot,'الاحتياطي');
     d.obligations = clone(obligations);
-    d.weekOpeningSnapshot = { day: 1, ...calc(d) };
+
+    d.weekOpeningSnapshot = {
+      day:1,
+      ...calc(d)
+    };
 
     return this.commit(d);
   }
 
-  applyAdjustment({ targetType, id, newVal, reason }) {
-    assert(this.state.isConfigured, 'افتح الدفتر أولاً.');
-    assert(textField(reason), 'سبب التصحيح مطلوب.');
+  applyAdjustment({targetType,id,newVal,reason}) {
+    assert(this.state.isConfigured,'افتح الدفتر أولاً.');
+    assert(textField(reason),'سبب التصحيح مطلوب.');
 
     const d = this.getDeepSnapshot();
-    let target, key;
+    let target;
+    let key;
 
     newVal = validateAmount(
       newVal,
@@ -745,19 +973,19 @@ class WealthEngine {
 
     if (targetType === 'BUCKET') {
       assert(
-        ['operatingCash', 'protectedCash'].includes(id),
+        ['operatingCash','protectedCash'].includes(id),
         'وعاء غير صالح.'
       );
       target = d.buckets;
       key = id;
     } else if (targetType === 'CONFIG') {
-      assert(id === 'baseDailyBurn', 'إعداد غير صالح.');
+      assert(id === 'baseDailyBurn','إعداد غير صالح.');
       target = d;
       key = id;
     } else {
-      assert(targetType === 'OBLIGATION', 'نوع غير صالح.');
+      assert(targetType === 'OBLIGATION','نوع غير صالح.');
       target = d.obligations.find(o => o.id === id);
-      assert(target, 'الدين غير موجود.');
+      assert(target,'الدين غير موجود.');
       key = 'outstanding';
     }
 
@@ -765,14 +993,14 @@ class WealthEngine {
     target[key] = newVal;
 
     d.ledger.push({
-      day: d.simDay,
-      type: 'MANUAL_BALANCE_ADJUSTMENT',
+      day:d.simDay,
+      type:'MANUAL_BALANCE_ADJUSTMENT',
       targetType,
       id,
       oldVal,
       newVal,
-      reason: reason.trim(),
-      timestamp: new Date().toISOString()
+      reason:reason.trim(),
+      timestamp:new Date().toISOString()
     });
 
     return this.commit(d);
@@ -780,7 +1008,8 @@ class WealthEngine {
 
   commitAudit(a) {
     assert(
-      this.state.isConfigured && this.state.dayStatus === 'OPEN',
+      this.state.isConfigured &&
+      this.state.dayStatus === 'OPEN',
       'اليوم غير مفتوح للتسجيل.'
     );
 
@@ -789,13 +1018,16 @@ class WealthEngine {
     const day = d.simDay;
     const events = [];
 
-    const inc = cents(a.income, 'الدخل');
-    const loan = cents(a.cashLoanTaken, 'السلفة');
-    const credit = cents(a.creditExpenseAdded, 'المشتريات بالدين');
-    const saved = cents(a.protectedSaved, 'المبلغ المعزول');
-    const spend = cents(a.spend, 'المصروف');
+    const inc = cents(a.income,'الدخل');
+    const loan = cents(a.cashLoanTaken,'السلفة');
+    const credit = cents(a.creditExpenseAdded,'المشتريات بالدين');
+    const saved = cents(a.protectedSaved,'المبلغ المعزول');
+    const spend = cents(a.spend,'المصروف');
 
-    assert(CLASSES.includes(a.spendClassification), 'تصنيف غير صالح.');
+    assert(
+      CLASSES.includes(a.spendClassification),
+      'تصنيف غير صالح.'
+    );
 
     assert(
       typeof a.cashLoanIsCritical === 'boolean' &&
@@ -805,15 +1037,21 @@ class WealthEngine {
 
     let op = cents(d.buckets.operatingCash) + inc + loan;
     let prot = cents(d.buckets.protectedCash);
+
     cash(op);
 
-    const add = (type, amount, extra = {}) => {
-      events.push({ day, type, amount: cash(amount), ...extra });
+    const add = (type,amount,extra={}) => {
+      events.push({
+        day,
+        type,
+        amount:cash(amount),
+        ...extra
+      });
     };
 
-    if (inc) add('INCOME_RECEIVED', inc);
+    if (inc) add('INCOME_RECEIVED',inc);
 
-    for (const [amt, isCritical, prefix, title, type] of [
+    for (const [amt,isCritical,prefix,title,type] of [
       [
         loan,
         a.cashLoanIsCritical,
@@ -829,53 +1067,61 @@ class WealthEngine {
         'CREDIT_PURCHASE_INCURRED'
       ]
     ]) {
-      if (amt) {
-        const id = prefix + '_' + day + '_' + Date.now() + '_' +
-          Math.random().toString(36).slice(2, 9);
+      if (!amt) continue;
 
-        d.obligations.push({
-          id,
-          title,
-          outstanding: cash(amt),
-          critical: isCritical
-        });
+      const id =
+        prefix + '_' + day + '_' + Date.now() + '_' +
+        Math.random().toString(36).slice(2,9);
 
-        add(type, amt, { critical: isCritical, obligationId: id });
-      }
+      d.obligations.push({
+        id,
+        title,
+        outstanding:cash(amt),
+        critical:isCritical
+      });
+
+      add(type,amt,{
+        critical:isCritical,
+        obligationId:id
+      });
     }
 
-    assert(saved <= op, 'المبلغ المعزول يتجاوز النقد المتاح.');
+    assert(saved <= op,'المبلغ المعزول يتجاوز النقد المتاح.');
+
     op -= saved;
     prot += saved;
     cash(prot);
 
-    if (saved) add('CASH_TRANSFERRED', saved);
+    if (saved) add('CASH_TRANSFERRED',saved);
 
     const drain = n => {
-      assert(n <= op + prot, 'المصروف أو السداد يتجاوز السيولة المتاحة.');
+      assert(
+        n <= op + prot,
+        'المصروف أو السداد يتجاوز السيولة المتاحة.'
+      );
 
-      const fromOp = Math.min(n, op);
+      const fromOp = Math.min(n,op);
       const fromProt = n - fromOp;
 
       op -= fromOp;
       prot -= fromProt;
 
       return {
-        operatingDrained: cash(fromOp),
-        protectedDrained: cash(fromProt)
+        operatingDrained:cash(fromOp),
+        protectedDrained:cash(fromProt)
       };
     };
 
     let breakdown = {
-      operatingDrained: 0,
-      protectedDrained: 0
+      operatingDrained:0,
+      protectedDrained:0
     };
 
     if (spend) {
       breakdown = drain(spend);
 
-      add('EXPENSE_INCURRED', spend, {
-        classification: a.spendClassification,
+      add('EXPENSE_INCURRED',spend,{
+        classification:a.spendClassification,
         ...breakdown,
         discretionaryDrainedProtected:
           a.spendClassification === 'DISCRETIONARY' &&
@@ -887,21 +1133,30 @@ class WealthEngine {
     let title = '';
 
     if (a.debtPayment) {
-      const amount = cents(a.debtPayment.amount, 'السداد', false);
+      const amount = cents(
+        a.debtPayment.amount,
+        'السداد',
+        false
+      );
+
       const ob = d.obligations.find(
         o => o.id === a.debtPayment.obligationId
       );
 
-      assert(ob, 'الدين غير موجود.');
-      assert(amount <= cents(ob.outstanding), 'السداد أكبر من الدين المتبقي.');
+      assert(ob,'الدين غير موجود.');
+      assert(
+        amount <= cents(ob.outstanding),
+        'السداد أكبر من الدين المتبقي.'
+      );
 
       const source = drain(amount);
+
       ob.outstanding = cash(cents(ob.outstanding) - amount);
       paid = cash(amount);
       title = ob.title;
 
-      add('OBLIGATION_PAID', amount, {
-        obligationId: ob.id,
+      add('OBLIGATION_PAID',amount,{
+        obligationId:ob.id,
         ...source
       });
     }
@@ -912,15 +1167,16 @@ class WealthEngine {
 
     events.push({
       day,
-      type: 'DAILY_AUDIT_COMMITTED',
-      timestamp: new Date().toISOString()
+      type:'DAILY_AUDIT_COMMITTED',
+      timestamp:new Date().toISOString()
     });
 
     d.ledger.push(...events);
+
     d.dailySnapshots.push({
       day,
       ...calc(d),
-      dayStatus: 'SEALED'
+      dayStatus:'SEALED'
     });
 
     const post = this.commit(d);
@@ -928,8 +1184,8 @@ class WealthEngine {
     return {
       pre,
       post,
-      executedDebtPaid: paid,
-      targetObligationTitle: title,
+      executedDebtPaid:paid,
+      targetObligationTitle:title,
       discretionaryDrainedProtected:
         a.spendClassification === 'DISCRETIONARY' &&
         breakdown.protectedDrained > 0
@@ -938,13 +1194,15 @@ class WealthEngine {
 
   nextDay() {
     assert(
-      this.state.isConfigured && this.state.dayStatus === 'SEALED',
+      this.state.isConfigured &&
+      this.state.dayStatus === 'SEALED',
       'أغلق اليوم أولاً.'
     );
 
     const d = this.getDeepSnapshot();
     d.simDay++;
     d.dayStatus = 'OPEN';
+
     return this.commit(d);
   }
 
@@ -956,13 +1214,14 @@ class WealthEngine {
 
     const before = this.storage.getItem(PRIMARY_KEY);
 
-    // نجاح كتابة المفتاح الرئيسي هو نقطة اعتماد الاستيراد.
     if (before !== null) {
-      this.storage.setItem(RECOVERY_KEY, before);
+      this.storage.setItem(RECOVERY_KEY,before);
     }
 
     const raw = JSON.stringify(d);
-    this.storage.setItem(PRIMARY_KEY, raw);
+
+    // لا تُعتمد الحالة في الذاكرة إلا بعد نجاح كتابة الدفتر.
+    this.storage.setItem(PRIMARY_KEY,raw);
 
     this.state = d;
     this.expectedRaw = raw;
@@ -970,8 +1229,16 @@ class WealthEngine {
   }
 }
 
-// واجهة الاستخدام
+/* =========================================================
+   6. أدوات الواجهة والتنقل
+   ========================================================= */
+
 const $ = id => document.getElementById(id);
+const esc = escapeHtml;
+
+const fmt = v => new Intl.NumberFormat('en-US',{
+  maximumFractionDigits:2
+}).format(v);
 
 let engine;
 let currentView = 'home';
@@ -980,20 +1247,14 @@ let draft = null;
 let step = 1;
 let chatMessages = [];
 
-const esc = escapeHtml;
-
-const fmt = v => new Intl.NumberFormat('en-US', {
-  maximumFractionDigits: 2
-}).format(v);
-
 const money = v => esc(fmt(v) + ' ' + engine.state.currency);
 
-function message(s, error = false) {
+function message(s,error=false) {
   $('status').textContent = s;
   $('status').className = s ? (error ? 'notice' : 'card') : '';
 }
 
-function field(id, label, value = '', type = 'number') {
+function field(id,label,value='',type='number') {
   return `
     <label for="${id}">${esc(label)}</label>
     <input
@@ -1008,14 +1269,18 @@ function field(id, label, value = '', type = 'number') {
   `;
 }
 
-function readMoney(id, zero = true) {
+function readMoney(id,zero=true) {
   const el = $(id);
   const s = el.value.trim();
 
-  assert(!el.validity.badInput, 'رقم غير صالح.');
-  assert(s !== '' || zero, 'أدخل القيمة المطلوبة.');
+  assert(!el.validity.badInput,'رقم غير صالح.');
+  assert(s !== '' || zero,'أدخل القيمة المطلوبة.');
 
-  return validateAmount(s === '' ? 0 : Number(s), 'المبلغ', zero);
+  return validateAmount(
+    s === '' ? 0 : Number(s),
+    'المبلغ',
+    zero
+  );
 }
 
 function run(fn) {
@@ -1023,7 +1288,7 @@ function run(fn) {
     message('');
     fn();
   } catch (e) {
-    message(e.message, true);
+    message(e.message,true);
   }
 }
 
@@ -1041,11 +1306,15 @@ function updateTopBar() {
     !s.isConfigured ||
     s.dayStatus !== 'SEALED';
 
-  $('adjust-btn').disabled = engine.blocked || !s.isConfigured;
+  $('adjust-btn').disabled =
+    engine.blocked || !s.isConfigured;
 
   document.querySelectorAll('#nav button').forEach(b => {
     b.disabled = engine.blocked;
-    b.classList.toggle('active', b.dataset.view === currentView);
+    b.classList.toggle(
+      'active',
+      b.dataset.view === currentView
+    );
   });
 }
 
@@ -1056,7 +1325,10 @@ function switchView(v) {
   message('');
   updateTopBar();
 
-  if (!engine.state.isConfigured) return renderSetupWizard();
+  if (!engine.state.isConfigured) {
+    renderSetupWizard();
+    return;
+  }
 
   if (v === 'home') renderHome();
   else if (v === 'audit') openAudit();
@@ -1065,26 +1337,32 @@ function switchView(v) {
   else renderHarvestCard();
 }
 
+/* =========================================================
+   7. افتتاح الدفتر
+   ========================================================= */
+
 function renderSetupWizard() {
   tempObligations = [];
 
   $('app').innerHTML = `
     <h2>افتتاح دفتر حَصيف</h2>
     <p class="muted">
-      أدخل أرصدتك الفعلية الآن. لا تدخل الدخل المتوقع ضمن السيولة.
+      أدخل أرصدتك الفعلية الآن.
+      لا تدخل الدخل المتوقع ضمن السيولة.
     </p>
 
     <div class="card">
-      ${field('op', 'كاش الجيبة')}
-      ${field('burn', 'خرجية البيت اليومية المعتادة')}
-      ${field('prot', 'القرش الأبيض المخبى', 0)}
+      ${field('op','كاش الجيبة')}
+      ${field('burn','خرجية البيت اليومية المعتادة')}
+      ${field('prot','القرش الأبيض المخبى',0)}
     </div>
 
     <div class="card">
       <h3>الديون والالتزامات</h3>
       <div id="obs"></div>
-      ${field('title', 'اسم الدين', '', 'text')}
-      ${field('amt', 'المبلغ')}
+
+      ${field('title','اسم الدين','','text')}
+      ${field('amt','المبلغ')}
 
       <label class="check">
         <input type="checkbox" id="critical">
@@ -1103,15 +1381,16 @@ function renderSetupWizard() {
 }
 
 function renderTempObligationsList() {
-  $('obs').innerHTML = tempObligations.map((o, i) => `
+  $('obs').innerHTML = tempObligations.map((o,i) => `
     <div class="row between card">
       <span>
         ${esc(o.title)} · ${money(o.outstanding)}
         ${o.critical ? '· عاجل' : ''}
       </span>
-      <button onclick="removeTempObligation(${i})" aria-label="حذف الدين">
-        ×
-      </button>
+      <button
+        onclick="removeTempObligation(${i})"
+        aria-label="حذف الدين"
+      >×</button>
     </div>
   `).join('') || '<p class="muted">لا توجد ديون مضافة.</p>';
 }
@@ -1121,16 +1400,16 @@ function addTempObligation() {
     const title = $('title').value.trim();
 
     assert(
-      textField(title, 200),
+      textField(title,200),
       'اكتب اسم دين لا يتجاوز 200 حرف.'
     );
 
     tempObligations.push({
-      id: 'ob_' + Date.now() + '_' +
-        Math.random().toString(36).slice(2, 9),
+      id:'ob_' + Date.now() + '_' +
+        Math.random().toString(36).slice(2,9),
       title,
-      outstanding: readMoney('amt', false),
-      critical: $('critical').checked
+      outstanding:readMoney('amt',false),
+      critical:$('critical').checked
     });
 
     $('title').value = '';
@@ -1142,20 +1421,21 @@ function addTempObligation() {
 }
 
 function removeTempObligation(i) {
-  tempObligations.splice(i, 1);
+  tempObligations.splice(i,1);
   renderTempObligationsList();
 }
 
 function saveInitialSetup() {
   run(() => {
     assert(
-      !$('title').value.trim() && !$('amt').value.trim(),
+      !$('title').value.trim() &&
+      !$('amt').value.trim(),
       'يوجد دين مكتوب لم تضفه. اضغط إضافة دين أولاً أو امسح حقوله.'
     );
 
     engine.setup(
       readMoney('op'),
-      readMoney('burn', false),
+      readMoney('burn',false),
       readMoney('prot'),
       tempObligations
     );
@@ -1163,6 +1443,10 @@ function saveInitialSetup() {
     switchView('home');
   });
 }
+
+/* =========================================================
+   8. الرئيسية
+   ========================================================= */
 
 function renderHome() {
   const s = engine.state;
@@ -1184,13 +1468,19 @@ function renderHome() {
   } else if (c.safetyDays === 0) {
     title = 'لا يوجد احتياطي حر';
     value = '0';
+
     desc = c.criticalDue > 0
       ? 'السيولة تغطي الالتزامات العاجلة فقط، دون فائض لمصاريف البيت.'
       : 'لا توجد سيولة مؤهلة تغطي مصروف البيت.';
   } else if (c.safetyDays < 1) {
     title = 'تغطية أقل من يوم';
+
     const hrs = c.safetyDays * 24;
-    value = hrs < 1 ? 'أقل من 1' : fmt(Math.floor(hrs * 10) / 10);
+
+    value = hrs < 1
+      ? 'أقل من 1'
+      : fmt(Math.floor(hrs * 10) / 10);
+
     unit = 'ساعة تقريباً';
     color = 'warn';
   }
@@ -1218,7 +1508,8 @@ function renderHome() {
     <div class="card hero">
       <h3>${title}</h3>
       <div class="hero-stat ${color}">
-        ${esc(value)} <small>${esc(unit)}</small>
+        ${esc(value)}
+        <small>${esc(unit)}</small>
       </div>
       <p class="muted">${desc}</p>
     </div>
@@ -1246,6 +1537,10 @@ function renderHome() {
   `;
 }
 
+/* =========================================================
+   9. تصحيح الأرصدة
+   ========================================================= */
+
 function showAdjustment() {
   if (engine.blocked || !engine.state.isConfigured) return;
 
@@ -1255,10 +1550,12 @@ function showAdjustment() {
   $('app').innerHTML = `
     <h2>تصحيح رصيد</h2>
     <p class="muted">
-      يسجَّل التعديل وسببه. للسداد الفعلي استخدم تسكيرة المساء.
+      يسجَّل التعديل وسببه.
+      للسداد الفعلي استخدم تسكيرة المساء.
     </p>
 
     <label for="target">البند</label>
+
     <select id="target" class="input-box">
       <option value="BUCKET:operatingCash">
         كاش الجيبة: ${money(s.buckets.operatingCash)}
@@ -1276,8 +1573,8 @@ function showAdjustment() {
       `).join('')}
     </select>
 
-    ${field('newval', 'القيمة الجديدة')}
-    ${field('reason', 'سبب التصحيح', '', 'text')}
+    ${field('newval','القيمة الجديدة')}
+    ${field('reason','سبب التصحيح','','text')}
 
     <div class="row">
       <button onclick="switchView('home')">إلغاء</button>
@@ -1290,13 +1587,13 @@ function showAdjustment() {
 
 function commitAdjustment() {
   run(() => {
-    const [targetType, id] = $('target').value.split(':');
+    const [targetType,id] = $('target').value.split(':');
 
     engine.applyAdjustment({
       targetType,
       id,
-      newVal: readMoney('newval', targetType !== 'CONFIG'),
-      reason: $('reason').value
+      newVal:readMoney('newval',targetType !== 'CONFIG'),
+      reason:$('reason').value
     });
 
     switchView('home');
@@ -1304,26 +1601,31 @@ function commitAdjustment() {
   });
 }
 
+/* =========================================================
+   10. تسكيرة المساء
+   ========================================================= */
+
 function openAudit() {
   if (engine.state.dayStatus === 'SEALED') {
     $('app').innerHTML = `
       <div class="card">
-        أُغلق اليوم بالفعل. انتقل إلى اليوم التالي من زر «بكرة».
+        أُغلق اليوم بالفعل.
+        انتقل إلى اليوم التالي من زر «بكرة».
       </div>
     `;
     return;
   }
 
   draft = {
-    income: 0,
-    cashLoanTaken: 0,
-    cashLoanIsCritical: false,
-    creditExpenseAdded: 0,
-    creditIsCritical: false,
-    protectedSaved: 0,
-    spend: 0,
-    spendClassification: 'ESSENTIAL',
-    debtPayment: null
+    income:0,
+    cashLoanTaken:0,
+    cashLoanIsCritical:false,
+    creditExpenseAdded:0,
+    creditIsCritical:false,
+    protectedSaved:0,
+    spend:0,
+    spendClassification:'ESSENTIAL',
+    debtPayment:null
   };
 
   step = 1;
@@ -1336,7 +1638,8 @@ function renderAudit() {
   if (step === 1) {
     body = `
       <h2>كم دخل جيبك من العمل اليوم؟</h2>
-      ${field('income', 'دخل العمل', draft.income)}
+      ${field('income','دخل العمل',draft.income)}
+
       <button onclick="$('income').value=0;auditNext()">
         صفر كسب اليوم
       </button>
@@ -1348,18 +1651,26 @@ function renderAudit() {
       <h2>هل عزلت مبلغاً في القرش الأبيض؟</h2>
       <p class="muted">
         التحويل بين الأوعية لا يزيد أيام الأمان.
-        السلفة النقدية تُضاف في الخطوة الأخيرة ويُفحص الرصيد عند التثبيت.
+        السلفة النقدية تُضاف في الخطوة الأخيرة
+        ويُفحص الرصيد عند التثبيت.
       </p>
-      ${field('saved', 'المبلغ الذي عزلته فعلياً', draft.protectedSaved)}
+
+      ${field(
+        'saved',
+        'المبلغ الذي عزلته فعلياً',
+        draft.protectedSaved
+      )}
     `;
   }
 
   if (step === 3) {
     body = `
       <h2>كم خرج نقداً لمصاريف البيت؟</h2>
-      <p class="muted">لا تضمّن سداد الديون أو مشتريات الدفتر هنا.</p>
+      <p class="muted">
+        لا تضمّن سداد الديون أو مشتريات الدفتر هنا.
+      </p>
 
-      ${field('spend', 'المصروف النقدي الفعلي', draft.spend)}
+      ${field('spend','المصروف النقدي الفعلي',draft.spend)}
 
       <button onclick="$('spend').value=engine.state.baseDailyBurn">
         استخدام خرجية البيت المعتادة
@@ -1370,9 +1681,12 @@ function renderAudit() {
       </label>
 
       <select id="classification" class="input-box">
-        ${CLASSES.map((c, i) => `
-          <option value="${c}" ${c === draft.spendClassification ? 'selected' : ''}>
-            ${['ضروريات', 'طارئ حتمي', 'مصروف إضافي'][i]}
+        ${CLASSES.map((c,i) => `
+          <option
+            value="${c}"
+            ${c === draft.spendClassification ? 'selected' : ''}
+          >
+            ${['ضروريات','طارئ حتمي','مصروف إضافي'][i]}
           </option>
         `).join('')}
       </select>
@@ -1391,20 +1705,32 @@ function renderAudit() {
       <label for="debt">سداد التزام واحد</label>
       <select id="debt" class="input-box">
         <option value="">لم أسدد التزاماً</option>
+
         ${engine.state.obligations
           .filter(o => o.outstanding > 0)
           .map(o => `
             <option
               value="${esc(o.id)}"
-              ${draft.debtPayment?.obligationId === o.id ? 'selected' : ''}
+              ${draft.debtPayment?.obligationId === o.id
+                ? 'selected'
+                : ''}
             >
               ${esc(o.title)} · ${money(o.outstanding)}
             </option>
           `).join('')}
       </select>
 
-      ${field('paid', 'المبلغ المسدد', draft.debtPayment?.amount ?? '')}
-      ${field('loan', 'سلفة نقدية استلمتها', draft.cashLoanTaken)}
+      ${field(
+        'paid',
+        'المبلغ المسدد',
+        draft.debtPayment?.amount ?? ''
+      )}
+
+      ${field(
+        'loan',
+        'سلفة نقدية استلمتها',
+        draft.cashLoanTaken
+      )}
 
       <label class="check">
         <input
@@ -1437,7 +1763,10 @@ function renderAudit() {
     <div class="card">${body}</div>
 
     <div class="row">
-      ${step > 1 ? '<button onclick="auditBack()">رجوع</button>' : ''}
+      ${step > 1
+        ? '<button onclick="auditBack()">رجوع</button>'
+        : ''}
+
       <button class="primary" onclick="auditNext()">
         ${step === 4 ? 'تسكير اليوم وحفظ السجل' : 'المتابعة'}
       </button>
@@ -1446,9 +1775,13 @@ function renderAudit() {
 }
 
 function collectStep() {
-  if (step === 1) draft.income = readMoney('income');
+  if (step === 1) {
+    draft.income = readMoney('income');
+  }
 
-  if (step === 2) draft.protectedSaved = readMoney('saved');
+  if (step === 2) {
+    draft.protectedSaved = readMoney('saved');
+  }
 
   if (step === 3) {
     draft.spend = readMoney('spend');
@@ -1460,12 +1793,16 @@ function collectStep() {
     const raw = $('paid').value.trim();
 
     assert(
-      (id === '' && raw === '') || (id !== '' && raw !== ''),
+      (id === '' && raw === '') ||
+      (id !== '' && raw !== ''),
       'حدد الدين والمبلغ معاً أو اتركهما فارغين.'
     );
 
     draft.debtPayment = id
-      ? { obligationId: id, amount: readMoney('paid', false) }
+      ? {
+          obligationId:id,
+          amount:readMoney('paid',false)
+        }
       : null;
 
     draft.cashLoanTaken = readMoney('loan');
@@ -1501,17 +1838,23 @@ function auditNext() {
 
 function renderImpactSeal(r) {
   const delta =
-    Math.round((r.pre.criticalGap - r.post.criticalGap) * 100) / 100;
+    Math.round(
+      (r.pre.criticalGap - r.post.criticalGap) * 100
+    ) / 100;
 
-  const detail = r.pre.criticalGap > 0 || r.post.criticalGap > 0
-    ? `الفجوة الحالية: ${money(r.post.criticalGap)}.
-       ${
-         delta > 0 ? 'انخفضت بمقدار ' + money(delta) :
-         delta < 0 ? 'ارتفعت بمقدار ' + money(-delta) :
-         'لم تتغير.'
-       }`
-    : `أيام الأمان: ${esc(fmt(r.post.safetyDays))} يوم.
-       قبل تسجيل هذه العملية: ${esc(fmt(r.pre.safetyDays))} يوم.`;
+  const detail =
+    r.pre.criticalGap > 0 || r.post.criticalGap > 0
+      ? `الفجوة الحالية: ${money(r.post.criticalGap)}.
+         ${
+           delta > 0
+             ? 'انخفضت بمقدار ' + money(delta)
+             : delta < 0
+               ? 'ارتفعت بمقدار ' + money(-delta)
+               : 'لم تتغير.'
+         }`
+      : `أيام الأمان: ${esc(fmt(r.post.safetyDays))} يوم.
+         قبل تسجيل هذه العملية:
+         ${esc(fmt(r.pre.safetyDays))} يوم.`;
 
   $('app').innerHTML = `
     <h2>🛡️ أُغلق اليوم وحُفظ السجل</h2>
@@ -1526,7 +1869,8 @@ function renderImpactSeal(r) {
 
     ${r.discretionaryDrainedProtected ? `
       <div class="notice">
-        وفق ترتيب الخصم المعتمد، غُطّي جزء من المصروف الإضافي من الاحتياطي.
+        وفق ترتيب الخصم المعتمد، غُطّي جزء من المصروف
+        الإضافي من الاحتياطي.
       </div>
     ` : ''}
 
@@ -1543,42 +1887,51 @@ function advanceDay() {
   });
 }
 
+/* =========================================================
+   11. السجل والكشف
+   ========================================================= */
+
 const eventNames = {
-  INCOME_RECEIVED: 'دخل العمل',
-  CASH_LOAN_RECEIVED: 'سلفة نقدية',
-  CREDIT_PURCHASE_INCURRED: 'شراء بالدين',
-  CASH_TRANSFERRED: 'تحويل للاحتياطي',
-  EXPENSE_INCURRED: 'مصروف',
-  OBLIGATION_PAID: 'سداد دين',
-  DAILY_AUDIT_COMMITTED: 'ختم اليوم',
-  MANUAL_BALANCE_ADJUSTMENT: 'تصحيح رصيد',
-  LEGACY_MIGRATION_INIT: 'ترحيل الدفتر'
+  INCOME_RECEIVED:'دخل العمل',
+  CASH_LOAN_RECEIVED:'سلفة نقدية',
+  CREDIT_PURCHASE_INCURRED:'شراء بالدين',
+  CASH_TRANSFERRED:'تحويل للاحتياطي',
+  EXPENSE_INCURRED:'مصروف',
+  OBLIGATION_PAID:'سداد دين',
+  DAILY_AUDIT_COMMITTED:'ختم اليوم',
+  MANUAL_BALANCE_ADJUSTMENT:'تصحيح رصيد',
+  LEGACY_MIGRATION_INIT:'ترحيل الدفتر'
 };
 
 function renderLedgerView() {
   $('app').innerHTML = `
     <h2>سجل الحركات</h2>
+
     <div class="list">
       ${engine.state.ledger.slice().reverse().map(e => `
         <div class="card">
-          <span class="tag">اليوم ${e.day}</span> ·
-          <strong>${eventNames[e.type]}</strong>
+          <span class="tag">اليوم ${e.day}</span>
+          · <strong>${eventNames[e.type]}</strong>
 
-          ${own(e, 'amount') ? `<div>${money(e.amount)}</div>` : ''}
+          ${own(e,'amount')
+            ? `<div>${money(e.amount)}</div>`
+            : ''}
 
           ${e.type === 'MANUAL_BALANCE_ADJUSTMENT' ? `
             <div>
-              ${esc(e.id)}: ${money(e.oldVal)} ← ${money(e.newVal)}
-              <br>${esc(e.reason)}
+              ${esc(e.id)}:
+              ${money(e.oldVal)} ← ${money(e.newVal)}
+              <br>
+              ${esc(e.reason)}
             </div>
           ` : ''}
 
           ${e.type === 'EXPENSE_INCURRED' ? `
             <small>
               ${esc({
-                ESSENTIAL: 'ضروريات',
-                EMERGENCY: 'طارئ',
-                DISCRETIONARY: 'إضافي'
+                ESSENTIAL:'ضروريات',
+                EMERGENCY:'طارئ',
+                DISCRETIONARY:'إضافي'
               }[e.classification])}
             </small>
           ` : ''}
@@ -1593,8 +1946,13 @@ function renderLedgerView() {
             </small>
           ` : ''}
 
-          ${e.note ? `<p class="muted">${esc(e.note)}</p>` : ''}
-          ${e.migrationNote ? `<p class="notice">${esc(e.migrationNote)}</p>` : ''}
+          ${e.note
+            ? `<p class="muted">${esc(e.note)}</p>`
+            : ''}
+
+          ${e.migrationNote
+            ? `<p class="notice">${esc(e.migrationNote)}</p>`
+            : ''}
 
           ${e.timestamp ? `
             <div>
@@ -1624,7 +1982,8 @@ function renderHarvestCard() {
     <h2>كشف الفترة</h2>
 
     <p class="muted">
-      نقطة المقارنة: ${esc(baseline)}. الأيام تتقدم يدوياً.
+      نقطة المقارنة: ${esc(baseline)}.
+      الأيام تتقدم يدوياً.
     </p>
 
     <div class="card">
@@ -1638,11 +1997,16 @@ function renderHarvestCard() {
     ${w ? `
       <div class="card">
         تغيّر أيام الأمان:
-        <span class="number">${esc(fmt(c.safetyDays - w.safetyDays))}</span>
+        <span class="number">
+          ${esc(fmt(c.safetyDays - w.safetyDays))}
+        </span>
         يوم
         <br>
+
         تغيّر الفجوة:
-        <span class="number">${esc(fmt(c.criticalGap - w.criticalGap))}</span>
+        <span class="number">
+          ${esc(fmt(c.criticalGap - w.criticalGap))}
+        </span>
         ${esc(s.currency)}
 
         <p class="muted">
@@ -1657,10 +2021,15 @@ function renderHarvestCard() {
     `}
 
     <div class="card">
-      الأيام المغلقة المتاحة في السجل: ${s.dailySnapshots.length}
+      الأيام المغلقة المتاحة في السجل:
+      ${s.dailySnapshots.length}
     </div>
   `;
 }
+
+/* =========================================================
+   12. المساعد الإرشادي
+   ========================================================= */
 
 function advisor(q) {
   const c = calc(engine.state);
@@ -1670,7 +2039,8 @@ function advisor(q) {
   const numbers =
     `كاش الجيبة: ${fmt(s.buckets.operatingCash)} ${u}\n` +
     `الاحتياطي: ${fmt(s.buckets.protectedCash)} ${u}\n` +
-    `الديون: ${fmt(c.debtBurden)} ${u}، العاجل منها: ${fmt(c.criticalDue)} ${u}\n` +
+    `الديون: ${fmt(c.debtBurden)} ${u}، ` +
+    `العاجل منها: ${fmt(c.criticalDue)} ${u}\n` +
     `الفجوة: ${fmt(c.criticalGap)} ${u}\n` +
     `أيام الأمان التقديرية: ${fmt(c.safetyDays)} يوم.\n\n`;
 
@@ -1722,7 +2092,12 @@ function renderAdvisorChat() {
 
     <form onsubmit="event.preventDefault();askAdvisor($('query').value)">
       <label for="query">سؤالك</label>
-      <input id="query" class="input-box" autocomplete="off" maxlength="1000">
+      <input
+        id="query"
+        class="input-box"
+        autocomplete="off"
+        maxlength="1000"
+      >
       <button class="primary wide" type="submit">إرسال</button>
     </form>
   `;
@@ -1735,32 +2110,45 @@ function askAdvisor(q) {
   if (!q) return;
 
   chatMessages.push(
-    { user: true, text: q },
-    { user: false, text: advisor(q) }
+    {user:true,text:q},
+    {user:false,text:advisor(q)}
   );
 
   renderAdvisorChat();
 }
 
-function downloadText(raw, name) {
-  const blob = new Blob([raw], { type: 'application/json' });
+/* =========================================================
+   13. النسخ الاحتياطي والاستيراد
+   ========================================================= */
+
+function downloadText(raw,name) {
+  const blob = new Blob([raw],{
+    type:'application/json'
+  });
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
 
   a.href = url;
   a.download = name;
+
   document.body.appendChild(a);
   a.click();
   a.remove();
 
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  setTimeout(() => URL.revokeObjectURL(url),1000);
 }
 
 function exportBackupData() {
   run(() => {
     const raw = engine.storage.getItem(PRIMARY_KEY);
-    assert(raw !== null, 'لا توجد بيانات على المفتاح الحالي.');
-    downloadText(raw, 'haseef-backup.json');
+
+    assert(
+      raw !== null,
+      'لا توجد بيانات على المفتاح الحالي.'
+    );
+
+    downloadText(raw,'haseef-backup.json');
   });
 }
 
@@ -1778,13 +2166,16 @@ function exportRecovery() {
 
     for (const key of keys) {
       const raw = engine.storage.getItem(key);
-      if (raw !== null) records.push({ key, raw });
+      if (raw !== null) records.push({key,raw});
     }
 
-    assert(records.length, 'لا توجد بيانات قابلة للتصدير.');
+    assert(records.length,'لا توجد بيانات قابلة للتصدير.');
 
     downloadText(
-      JSON.stringify({ recoveryOnly: true, records }, null, 2),
+      JSON.stringify({
+        recoveryOnly:true,
+        records
+      },null,2),
       'haseef-recovery-raw.json'
     );
 
@@ -1801,7 +2192,10 @@ async function handleBackupFile(event) {
   if (!file) return;
 
   try {
-    assert(file.size <= 10 * 1024 * 1024, 'الملف أكبر من 10 ميغابايت.');
+    assert(
+      file.size <= 10 * 1024 * 1024,
+      'الملف أكبر من 10 ميغابايت.'
+    );
 
     const raw = await file.text();
     let parsed;
@@ -1816,7 +2210,7 @@ async function handleBackupFile(event) {
     const c = calc(candidate);
 
     const approved = confirm(
-      `سيستبدل هذا الملف الدفتر الحالي.\n` +
+      'سيستبدل هذا الملف الدفتر الحالي.\n' +
       `السيولة: ${fmt(c.totalLiquid)} ${candidate.currency}\n` +
       `الديون: ${fmt(c.debtBurden)} ${candidate.currency}\n` +
       `أيام الأمان: ${fmt(c.safetyDays)}\n` +
@@ -1832,13 +2226,17 @@ async function handleBackupFile(event) {
     if (!approved) return;
 
     engine.importState(candidate);
+
     draft = null;
     chatMessages = [];
 
     switchView('home');
-    message('تم الاستيراد. احتُفظ بالدفتر السابق محلياً إن كان موجوداً.');
+
+    message(
+      'تم الاستيراد. احتُفظ بالدفتر السابق محلياً إن كان موجوداً.'
+    );
   } catch (e) {
-    message('لم يكتمل الاستيراد: ' + e.message, true);
+    message('لم يكتمل الاستيراد: ' + e.message,true);
   } finally {
     input.value = '';
   }
@@ -1847,19 +2245,26 @@ async function handleBackupFile(event) {
 function exportPrior() {
   run(() => {
     const raw = engine.storage.getItem(RECOVERY_KEY);
-    assert(raw !== null, 'لا توجد نسخة سابقة للاستيراد.');
-    downloadText(raw, 'haseef-before-import.json');
+
+    assert(
+      raw !== null,
+      'لا توجد نسخة سابقة للاستيراد.'
+    );
+
+    downloadText(raw,'haseef-before-import.json');
   });
 }
 
 function showLoadError(result) {
   updateTopBar();
-  message(result.message, true);
+  message(result.message,true);
 
   $('app').innerHTML = `
     <h2>حماية الدفتر الموجود</h2>
+
     <p class="muted">
-      تعذر فتح الدفتر. لن يتم إنشاء دفتر جديد فوق البيانات الحالية.
+      تعذر فتح الدفتر.
+      لن يتم إنشاء دفتر جديد فوق البيانات الحالية.
     </p>
 
     <button class="wide" onclick="exportRecovery()">
@@ -1871,7 +2276,7 @@ function showLoadError(result) {
     </button>
 
     <p class="muted">
-      يمكنك استيراد نسخة صحيحة من الزر العلوي.
+      يمكنك استيراد نسخة صحيحة من أدوات النسخ الاحتياطي.
       إذا كان التخزين محظوراً، فعّله في إعدادات المتصفح.
     </p>
   `;
@@ -1879,9 +2284,13 @@ function showLoadError(result) {
 
 function boot() {
   engine = new WealthEngine(window.localStorage);
+
   const result = engine.load();
 
-  if (result.status === 'EMPTY' || result.status === 'OK') {
+  if (
+    result.status === 'EMPTY' ||
+    result.status === 'OK'
+  ) {
     updateTopBar();
     switchView('home');
   } else {
@@ -1889,12 +2298,14 @@ function boot() {
   }
 
   const recovery = document.createElement('button');
+
   recovery.textContent = 'تصدير النسخة السابقة للاستيراد';
   recovery.onclick = exportPrior;
   recovery.style.marginTop = '10px';
+
   document.querySelector('.container').appendChild(recovery);
 
-  window.addEventListener('storage', e => {
+  window.addEventListener('storage',e => {
     if (e.key === PRIMARY_KEY) {
       engine.blocked = true;
       updateTopBar();
@@ -1907,7 +2318,959 @@ function boot() {
   });
 }
 
-if (typeof window !== 'undefined' && !window.__HASEEF_TEST__) {
+/* =========================================================
+   14. بيانات التخطيط الشخصي
+   ========================================================= */
+
+const PLAN_FIELDS = [
+  ['clientName','اسم صاحب التقرير','text'],
+  ['monthlyIncome','الدخل الشهري الصافي المتوقع — بعد تكاليف العمل','money'],
+  ['incomeType','طبيعة الدخل','select'],
+  ['nextIncomeDate','تاريخ الدخل القادم المعروف','date'],
+  ['nextIncomeAmount','مبلغ الدخل القادم المعروف','money'],
+  ['fixedCosts','مصاريف شهرية أساسية إضافية غير داخلة في خرجية اليوم','money'],
+  ['debtInstallments','أقساط الشهر غير داخلة في المصاريف السابقة','money'],
+  ['work','طبيعة العمل الحالية','text'],
+  ['skills','مهارات أو خدمات تستطيع تقديمها فعلياً','text'],
+  ['weeklyHours','الساعات المتاحة أسبوعياً للعمل الإضافي','hours'],
+  ['goal','الهدف المالي الأول','text'],
+  ['constraints','قيود يجب احترامها: صحة، وقت، نقل، رعاية الأسرة…','text']
+];
+
+function checkPlanningProfile(p) {
+  assert(object(p),'بيانات الخطة غير صالحة.');
+
+  for (const [key,label,type] of PLAN_FIELDS) {
+    const v = p[key];
+
+    if (
+      v === null ||
+      v === undefined ||
+      v === ''
+    ) {
+      continue;
+    }
+
+    if (type === 'money') {
+      cents(v,label);
+    } else if (type === 'hours') {
+      assert(
+        Number.isFinite(v) && v >= 0 && v <= 168,
+        'الساعات يجب أن تكون بين 0 و168.'
+      );
+    } else if (type === 'select') {
+      assert(
+        ['stable','variable'].includes(v),
+        'طبيعة الدخل غير صالحة.'
+      );
+    } else if (type === 'date') {
+      assert(
+        /^\d{4}-\d{2}-\d{2}$/.test(v) &&
+        !isNaN(Date.parse(v)) &&
+        new Date(v).toISOString().slice(0,10) === v,
+        'تاريخ غير صالح.'
+      );
+    } else {
+      assert(
+        typeof v === 'string' && v.length <= 1000,
+        label + ': نص طويل أو غير صالح.'
+      );
+    }
+  }
+
+  if (p.updatedAt) {
+    assert(
+      timestamp(p.updatedAt),
+      'تاريخ تحديث بيانات الخطة غير صالح.'
+    );
+  }
+}
+
+/* تشمل بيانات الخطة فحص الحفظ والاستيراد */
+const coreValidateState = validateState;
+
+validateState = function(d) {
+  coreValidateState(d);
+
+  if (own(d,'planningProfile')) {
+    checkPlanningProfile(d.planningProfile);
+  }
+
+  return d;
+};
+
+function requireReportState() {
+  assert(
+    !engine.blocked && engine.state.isConfigured,
+    'افتح دفتراً صالحاً قبل إنشاء التقرير.'
+  );
+
+  validateState(engine.state);
+}
+
+function showPlanningForm() {
+  run(() => {
+    requireReportState();
+
+    const p = engine.state.planningProfile || {};
+    currentView = 'planning';
+
+    $('app').innerHTML = `
+      <h2>بيانات خريطة العمل</h2>
+
+      <p class="muted">
+        اترك المجهول فارغاً.
+        اكتب صفراً فقط إذا أكدت عدم وجود المبلغ.
+        البيانات محفوظة على هذا المتصفح
+        وتدخل ضمن النسخة الاحتياطية.
+      </p>
+
+      <div class="notice">
+        لا تُدخل المصروف نفسه مرتين.
+        الحساب الشهري يستخدم 30 يوماً لأغراض التقدير،
+        ولا يغيّر مؤشر أيام الأمان الحالي.
+      </div>
+    ` + PLAN_FIELDS.map(([key,label,type]) => {
+      if (type === 'select') {
+        return `
+          <label for="plan-${key}">${esc(label)}</label>
+          <select id="plan-${key}" class="input-box">
+            <option value="">غير محدد</option>
+
+            <option
+              value="stable"
+              ${p[key] === 'stable' ? 'selected' : ''}
+            >
+              منتظم
+            </option>
+
+            <option
+              value="variable"
+              ${p[key] === 'variable' ? 'selected' : ''}
+            >
+              متغير
+            </option>
+          </select>
+        `;
+      }
+
+      return field(
+        'plan-' + key,
+        label,
+        p[key] ?? '',
+        type === 'money' || type === 'hours'
+          ? 'number'
+          : type === 'date'
+            ? 'date'
+            : 'text'
+      );
+    }).join('') + `
+      <p class="muted">
+        لا يُعد الدخل القادم نقداً متاحاً حتى تقبضه
+        وتسجله في التسكيرة.
+        التزامات الشهر تقدير إجمالي؛
+        تحديد التواريخ التفصيلية مطلوب قبل اعتماد جدول سداد.
+      </p>
+
+      <div class="row">
+        <button onclick="switchView('advisor')">رجوع</button>
+
+        <button class="primary" onclick="savePlanningProfile()">
+          حفظ وبناء الخطة المتقدمة
+        </button>
+      </div>
+    `;
+  });
+}
+
+function savePlanningProfile() {
+  run(() => {
+    const p = {};
+
+    for (const [key,label,type] of PLAN_FIELDS) {
+      const el = $('plan-' + key);
+      const raw = el.value.trim();
+
+      assert(
+        !el.validity.badInput,
+        label + ': إدخال غير صالح.'
+      );
+
+      p[key] = raw === ''
+        ? null
+        : type === 'money'
+          ? validateAmount(Number(raw),label)
+          : type === 'hours'
+            ? Number(raw)
+            : raw;
+    }
+
+    p.updatedAt = new Date().toISOString();
+    checkPlanningProfile(p);
+
+    const d = engine.getDeepSnapshot();
+    d.planningProfile = p;
+
+    engine.commit(d);
+
+    showReportCenter('advanced');
+
+    message(
+      'حُفظت بيانات التخطيط. راجع الافتراضات قبل اعتماد الخطة.'
+    );
+  });
+}
+
+/* =========================================================
+   15. بناء الخطة الأساسية والمتقدمة
+   ========================================================= */
+
+function buildPersonalPlan(state,advanced=false) {
+  const s = clone(state);
+  validateState(s);
+
+  const c = calc(s);
+  const p = s.planningProfile || {};
+  const missing = [];
+
+  for (const [key,label] of PLAN_FIELDS) {
+    if (
+      p[key] === null ||
+      p[key] === undefined ||
+      p[key] === ''
+    ) {
+      missing.push(label);
+    }
+  }
+
+  const financialReady = [
+    'monthlyIncome',
+    'fixedCosts',
+    'debtInstallments'
+  ].every(k => typeof p[k] === 'number');
+
+  let monthly = null;
+
+  if (financialReady) {
+    const daily30 = cents(s.baseDailyBurn) * 30;
+
+    assert(
+      Number.isSafeInteger(daily30),
+      'المصروف الشهري خارج الحدود.'
+    );
+
+    const total =
+      daily30 +
+      cents(p.fixedCosts) +
+      cents(p.debtInstallments);
+
+    assert(
+      Number.isSafeInteger(total),
+      'مجموع المصاريف خارج الحدود.'
+    );
+
+    monthly = {
+      daily30:daily30 / 100,
+      total:total / 100,
+      net:(cents(p.monthlyIncome) - total) / 100
+    };
+  }
+
+  const priority =
+    c.criticalGap > 0
+      ? 'توضيح العجز العاجل وحماية الضروريات'
+      : c.safetyDays < 1
+        ? 'تأمين احتياجات اليوم وبناء أول يوم احتياطي'
+        : c.safetyDays < 7
+          ? 'المحافظة على التغطية وتحديد الالتزامات القادمة'
+          : 'مراجعة الاستحقاقات والمحافظة على الاحتياطي';
+
+  const actions = [
+    [
+      'خلال 24 ساعة',
+      'راجع النقد الموجود فعلياً، وافصل الدين العاجل عن المؤجل. لا تسجل دخلاً متوقعاً كنقد مقبوض.',
+      'تأكيد الأرصدة وأسماء الالتزامات ومواعيدها'
+    ],
+    [
+      'الأيام 2–3',
+      c.criticalGap > 0
+        ? 'حدّد مواعيد المطالبات العاجلة وناقش الخيارات المتاحة مع الدائن، دون اعتبار التأجيل محققاً قبل الاتفاق.'
+        : 'راجع الضروريات الفعلية ومصاريف الأسبوع قبل عزل أي مبلغ.',
+      'قائمة بالضروريات والاستحقاقات دون ازدواج'
+    ],
+    [
+      'الأيام 4–7',
+      'سجّل ما حدث فعلاً، ثم قارن أيام الأمان والفجوة مع بداية الخطة. نقل المال للاحتياطي وحده لا يزيد الأمان.',
+      'مراجعة واحدة في نهاية الأسبوع'
+    ]
+  ];
+
+  const roadmap = advanced ? [
+    [
+      'الأسبوع 1',
+      'تثبيت البيانات',
+      actions[0][1] + ' ' + actions[1][1],
+      'أرصدة مؤكدة وقائمة استحقاقات'
+    ],
+    [
+      'الأسبوع 2',
+      'اختبار خطوة دخل صغيرة',
+      p.work &&
+      p.skills &&
+      typeof p.weeklyHours === 'number' &&
+      p.weeklyHours > 0
+        ? `استناداً إلى عملك «${p.work}» ومهاراتك «${p.skills}»، اختر خدمة واحدة تستطيع تنفيذها ضمن ${p.weeklyHours} ساعة متاحة أسبوعياً. حدّد تكلفتها وجرّب عرضها على عميل مناسب دون التزام بإنفاق جديد.`
+        : 'أكمل بيانات العمل والمهارات والوقت قبل تحديد نشاط إضافي. إذا لم يتوفر وقت إضافي، ركز على تنظيم العمل الحالي.',
+      'تسجيل الوقت والتكلفة والنتيجة الفعلية؛ لا يُفترض وجود مبيعات'
+    ],
+    [
+      'الأسبوع 3',
+      'مراجعة قابلية الخطة',
+      monthly
+        ? monthly.net < 0
+          ? 'التقدير الشهري يظهر عجزاً. راجع البنود والدخل وتوقيت الاستحقاقات؛ لا تضع قسطاً إضافياً أو هدف ادخار إلزامياً.'
+          : 'الفائض الشهري تقديري وليس نقداً جاهزاً. تأكد من التحصيل والاستحقاقات قبل تخصيصه.'
+        : 'أكمل الدخل والمصاريف والأقساط قبل حساب تخصيص مالي.',
+      'مقارنة المتوقع بما تحقق فعلياً'
+    ],
+    [
+      'الأسبوع 4',
+      'قرار الاستمرار أو التعديل',
+      'راجع تغير السيولة والديون وأيام الأمان. كرر الخطوة المجدية أو عدّلها بناء على النتيجة، ثم أصدر خطة محدثة.',
+      'قرار واحد واضح للشهر التالي'
+    ]
+  ] : [];
+
+  return {
+    createdAt:new Date().toISOString(),
+    state:s,
+    metrics:c,
+    profile:p,
+    priority,
+    missing,
+    monthly,
+    actions,
+    roadmap,
+    advanced
+  };
+}
+
+/* =========================================================
+   16. إنشاء التقارير المقروءة
+   ========================================================= */
+
+function reportDocument(kind) {
+  requireReportState();
+
+  const r = buildPersonalPlan(
+    engine.state,
+    kind === 'advanced'
+  );
+
+  const s = r.state;
+  const c = r.metrics;
+  const p = r.profile;
+
+  const currency = esc(s.currency);
+  const amount = v => esc(fmt(v)) + ' ' + currency;
+
+  const title = kind === 'statement'
+    ? 'كشف الحسابات'
+    : kind === 'advanced'
+      ? 'خريطة العمل المقترحة — 30 يوماً'
+      : 'خطتي المالية المقترحة — 7 أيام';
+
+  const rows = [
+    ['النقد المتاح في الجيبة',amount(s.buckets.operatingCash)],
+    ['الاحتياطي',amount(s.buckets.protectedCash)],
+    ['إجمالي الديون',amount(c.debtBurden)],
+    ['الالتزامات العاجلة',amount(c.criticalDue)],
+    ['الفجوة العاجلة',amount(c.criticalGap)],
+    ['المصروف اليومي المسجل',amount(s.baseDailyBurn)],
+    ['أيام الأمان التقديرية',esc(fmt(c.safetyDays)) + ' يوم']
+  ];
+
+  const table = (headers,data) => `
+    <table>
+      <thead>
+        <tr>
+          ${headers.map(h => '<th>' + esc(h) + '</th>').join('')}
+        </tr>
+      </thead>
+      <tbody>
+        ${data.map(row => `
+          <tr>
+            ${row.map(cell => '<td>' + cell + '</td>').join('')}
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+
+  let body = `
+    <h1>${title}</h1>
+    <p>حَصيف • اعرف وضعك. وابنِ أمانك.</p>
+
+    <p>
+      <b>صاحب التقرير:</b> ${esc(p.clientName || 'جون')}
+      <br>
+
+      <b>تاريخ الإصدار:</b>
+      ${esc(new Date(r.createdAt).toLocaleString('ar-LB'))}
+      <br>
+
+      <b>آخر حالة مسجلة:</b>
+      اليوم اليدوي ${s.simDay} —
+      ${s.dayStatus === 'SEALED' ? 'مغلق' : 'مفتوح'}
+
+      ${p.updatedAt ? `
+        <br>
+        <b>تحديث بيانات التخطيط:</b>
+        ${esc(new Date(p.updatedAt).toLocaleString('ar-LB'))}
+      ` : ''}
+    </p>
+
+    <h2>الأرقام المسجلة</h2>
+    ${table(['البند','القيمة'],rows)}
+
+    <p class="note">
+      أيام الأمان = السيولة المؤهلة بعد حجز الالتزامات العاجلة
+      ÷ المصروف اليومي.
+      لا يدخل الدخل المتوقع في هذا الحساب.
+      التواريخ الفعلية للاستحقاقات غير محفوظة في الدفتر الأساسي،
+      لذلك لا يمثل المؤشر توقعاً زمنياً كاملاً.
+    </p>
+  `;
+
+  if (kind === 'statement') {
+    body += `
+      <h2>الديون</h2>
+
+      ${s.obligations.length
+        ? table(
+            ['الالتزام','المتبقي','الحالة'],
+            s.obligations.map(o => [
+              esc(o.title),
+              amount(o.outstanding),
+              o.critical ? 'عاجل' : 'مؤجل / غير عاجل'
+            ])
+          )
+        : '<p>لا توجد ديون مسجلة.</p>'
+      }
+
+      <h2>سجل الحركات</h2>
+
+      ${s.ledger.length
+        ? table(
+            ['اليوم','الحركة','المبلغ أو التعديل','التفاصيل'],
+            s.ledger.map(e => [
+              String(e.day),
+              esc(eventNames[e.type]),
+              e.type === 'MANUAL_BALANCE_ADJUSTMENT'
+                ? amount(e.oldVal) + ' ← ' + amount(e.newVal)
+                : own(e,'amount')
+                  ? amount(e.amount)
+                  : '—',
+              esc(
+                e.reason ||
+                e.note ||
+                (
+                  e.obligationId
+                    ? s.obligations.find(
+                        o => o.id === e.obligationId
+                      )?.title
+                    : ''
+                ) ||
+                '—'
+              )
+            ])
+          )
+        : '<p>لا توجد حركات بعد؛ التقرير يعكس أرصدة الافتتاح.</p>'
+      }
+    `;
+  } else {
+    body += `
+      <h2>الأولوية المقترحة</h2>
+      <p class="focus">${esc(r.priority)}</p>
+
+      ${p.goal ? `
+        <p><b>هدفك المسجل:</b> ${esc(p.goal)}</p>
+      ` : ''}
+
+      ${p.constraints ? `
+        <p><b>القيود المسجلة:</b> ${esc(p.constraints)}</p>
+      ` : ''}
+
+      <h2>ثلاث خطوات عملية</h2>
+
+      ${table(
+        ['الوقت','الخطوة المقترحة','ما نراجعه'],
+        r.actions.map(row => row.map(esc))
+      )}
+    `;
+
+    if (kind === 'advanced') {
+      body += '<h2>التقدير الشهري</h2>';
+
+      if (r.monthly) {
+        body += table(
+          ['البند','القيمة'],
+          [
+            ['الدخل الشهري الصافي المتوقع',amount(p.monthlyIncome)],
+            ['المصروف اليومي × 30',amount(r.monthly.daily30)],
+            ['مصاريف أساسية إضافية',amount(p.fixedCosts)],
+            ['الأقساط الشهرية',amount(p.debtInstallments)],
+            ['إجمالي الاحتياجات المقدرة',amount(r.monthly.total)],
+            ['الفائض / العجز التقديري',amount(r.monthly.net)]
+          ]
+        );
+
+        body += `
+          <p class="note">
+            افتراض الحساب: 30 يوماً،
+            وعدم تكرار أي مصروف بين البنود.
+            الدخل المتوقع ليس مضموناً،
+            والفائض الشهري لا يحدد سيولة يوم الاستحقاق.
+
+            ${p.incomeType === 'variable'
+              ? 'الدخل متغير؛ هذا سيناريو واحد مبني على الرقم الذي أدخلته.'
+              : ''}
+          </p>
+        `;
+      } else {
+        body += `
+          <p class="note">
+            لم تُحسب مبالغ ادخار أو سداد:
+            الدخل أو المصاريف الإضافية أو الأقساط غير مكتملة.
+            اكتب صفراً فقط بعد تأكيد عدم وجود البند.
+          </p>
+        `;
+      }
+
+      if (
+        p.nextIncomeDate &&
+        typeof p.nextIncomeAmount === 'number'
+      ) {
+        body += `
+          <p>
+            التحصيل القادم الذي سجلته:
+            ${amount(p.nextIncomeAmount)}
+            بتاريخ ${esc(p.nextIncomeDate)}.
+            لا يُضاف إلى الرصيد حتى الاستلام.
+            تحقق من أن الموعد ما زال سارياً.
+          </p>
+        `;
+      }
+
+      body += `
+        <h2>خريطة العمل لأربعة أسابيع</h2>
+
+        ${table(
+          ['الفترة','التركيز','العمل المقترح','المتابعة'],
+          r.roadmap.map(row => row.map(esc))
+        )}
+
+        <h2>إذا تعطل الدخل أو ظهر طارئ</h2>
+        <p>
+          سجل النقد والمصروف الفعليين، وأعد حساب الفجوة،
+          وراجع الاستحقاقات والضروريات.
+          لا تبنِ قسطاً جديداً على تحصيل لم يحدث،
+          ولا تعوّض اختلاف الواقع بأرقام افتراضية.
+        </p>
+      `;
+    } else {
+      body += `
+        <h2>الخطوة التالية</h2>
+        <p>
+          لتحويل هذه الخطوات إلى خريطة شهرية،
+          افتح المساعد واختر «استكمال بيانات الخطة المتقدمة».
+          ستُطلب بيانات الدخل والالتزامات والعمل والوقت المتاح.
+        </p>
+      `;
+    }
+
+    body += `
+      <h2>المعلومات الناقصة</h2>
+
+      ${r.missing.length
+        ? '<ul>' + r.missing.map(
+            x => '<li>' + esc(x) + '</li>'
+          ).join('') + '</ul>'
+        : `
+          <p>
+            اكتملت حقول نموذج التخطيط.
+            ما زالت التوصيات تعتمد على صحة المدخلات
+            والتحقق من مواعيد الالتزامات.
+          </p>
+        `
+      }
+
+      <h2>المراجعة</h2>
+      <p>
+        راجع هذه الخطة بعد سبعة أيام فعلية
+        أو عند تغير الدخل أو الاستحقاقات،
+        وأصدر نسخة جديدة عند الحاجة.
+        مدة الخطة مقترحة وتبدأ عند اعتمادك لها؛
+        عداد التطبيق يتقدم يدوياً.
+      </p>
+
+      <p class="note">
+        هذه خطة مقترحة بقواعد واضحة،
+        وليست ضماناً للدخل أو توصية استثمارية.
+        لا يُستنتج الاستعداد للاستثمار
+        من بلوغ عدد معين من أيام الأمان.
+      </p>
+    `;
+  }
+
+  if (s.historyIncomplete) {
+    body += `
+      <p class="note">
+        تنبيه: الدفتر مرحّل وقد لا يحتوي على كامل التاريخ السابق.
+      </p>
+    `;
+  }
+
+  return `
+    <!DOCTYPE html>
+    <html lang="ar" dir="rtl">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>${title} — حَصيف</title>
+
+      <style>
+        body{
+          font:16px/1.9 system-ui,Arial,sans-serif;
+          color:#142432;
+          background:#edf2f5;
+          margin:0;
+          padding:20px
+        }
+        main{
+          max-width:850px;
+          margin:auto;
+          background:white;
+          padding:30px;
+          border-radius:12px
+        }
+        h1{color:#0f766e;font-size:26px}
+        h2{font-size:20px;margin-top:28px}
+        table{
+          border-collapse:collapse;
+          width:100%;
+          margin:14px 0;
+          font-size:14px;
+          overflow-wrap:anywhere
+        }
+        th,td{
+          border:1px solid #cbd5e1;
+          padding:10px;
+          text-align:right;
+          vertical-align:top
+        }
+        th{background:#eaf5f2}
+        tr{break-inside:avoid}
+        thead{display:table-header-group}
+        .note{
+          padding:12px;
+          background:#fff8e6;
+          border-right:3px solid #d5a63b;
+          font-size:14px
+        }
+        .focus{
+          padding:15px;
+          background:#eaf5f2;
+          font-weight:bold
+        }
+        button{
+          font:inherit;
+          padding:9px 16px;
+          background:#0f766e;
+          color:white;
+          border:0;
+          border-radius:8px;
+          cursor:pointer
+        }
+        .toolbar{
+          max-width:850px;
+          margin:0 auto 14px
+        }
+        footer{
+          font-size:12px;
+          color:#526270;
+          border-top:1px solid #ddd;
+          margin-top:25px;
+          padding-top:12px
+        }
+
+        @media print{
+          @page{size:A4;margin:15mm}
+          body{background:white;padding:0;font-size:12pt}
+          main{padding:0;max-width:none}
+          .toolbar{display:none}
+          h2,h1{break-after:avoid}
+          table{font-size:10pt}
+          .note{background:white}
+          footer{margin-top:15px}
+        }
+
+        @media(max-width:500px){
+          body{padding:8px}
+          main{padding:14px}
+          th,td{padding:6px;font-size:12px}
+        }
+      </style>
+    </head>
+
+    <body>
+      <div class="toolbar">
+        <button onclick="window.print()">طباعة / حفظ PDF</button>
+        <p>
+          لحفظ PDF اختر «حفظ بتنسيق PDF»
+          من وجهة الطباعة المتاحة في متصفحك.
+        </p>
+      </div>
+
+      <main>
+        ${body}
+
+        <footer>
+          تقرير شخصي يحتوي على بيانات مالية.
+          شاركه فقط مع من تختاره.
+          نسخة التقرير ثابتة ولا تتحدث تلقائياً.
+        </footer>
+      </main>
+    </body>
+    </html>
+  `;
+}
+
+/* =========================================================
+   17. تنزيل التقارير وعرض PDF
+   ========================================================= */
+
+function downloadReadableReport(kind) {
+  run(() => {
+    const doc = reportDocument(kind);
+
+    const blob = new Blob([doc],{
+      type:'text/html;charset=utf-8'
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+
+    a.href = url;
+    a.download =
+      `haseef-${kind}-${new Date().toISOString().slice(0,10)}.html`;
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url),2000);
+
+    message(
+      'تم تجهيز التقرير للتحميل كملف HTML مقروء. افتحه في المتصفح، ومنه يمكنك الطباعة أو الحفظ PDF.'
+    );
+  });
+}
+
+function openPrintableReport(kind) {
+  run(() => {
+    const html = reportDocument(kind);
+    const w = window.open('','_blank');
+
+    assert(
+      w,
+      'اسمح بفتح نافذة التقرير أو استخدم تنزيل التقرير المقروء.'
+    );
+
+    w.document.open();
+    w.document.write(html);
+    w.document.close();
+
+    message(
+      'فُتح التقرير. اضغط «طباعة / حفظ PDF» واختر وجهة PDF.'
+    );
+  });
+}
+
+/* =========================================================
+   18. مركز التقارير
+   ========================================================= */
+
+function showReportCenter(selected='statement') {
+  run(() => {
+    requireReportState();
+    currentView = 'reports';
+
+    const options = [
+      [
+        'statement',
+        'كشف حساباتي',
+        'الأرصدة والديون وسجل الحركات.'
+      ],
+      [
+        'basic',
+        'خطتي المقترحة',
+        'أولوية واحدة وثلاث خطوات للأسبوع المقبل.'
+      ],
+      [
+        'advanced',
+        'خريطة عملي',
+        'خطة لأربعة أسابيع؛ الحسابات مشروطة باكتمال البيانات.'
+      ]
+    ];
+
+    $('app').innerHTML = `
+      <h2>التقارير والخطط</h2>
+
+      <p class="muted">
+        تنزيل مباشر بصيغة HTML مقروءة دون إنترنت.
+        حفظ PDF يتم من نافذة طباعة المتصفح، وليس بتنزيل آلي.
+      </p>
+    ` + options.map(([kind,title,desc]) => `
+      <div
+        class="card"
+        ${kind === selected
+          ? 'style="border-color:var(--teal)"'
+          : ''}
+      >
+        <h3>${title}</h3>
+        <p class="muted">${desc}</p>
+
+        <div class="row">
+          <button
+            class="primary"
+            onclick="downloadReadableReport('${kind}')"
+          >
+            تنزيل ملف مقروء
+          </button>
+
+          <button onclick="openPrintableReport('${kind}')">
+            عرض / حفظ PDF
+          </button>
+        </div>
+      </div>
+    `).join('') + `
+      <button class="primary wide" onclick="showPlanningForm()">
+        استكمال بيانات الخطة المتقدمة
+      </button>
+
+      <button
+        class="wide"
+        onclick="switchView('advisor')"
+        style="margin-top:10px"
+      >
+        العودة للمساعد
+      </button>
+    `;
+  });
+}
+
+/* =========================================================
+   19. ربط الخطط بالمساعد
+   ========================================================= */
+
+const originalAdvisorView = renderAdvisorChat;
+
+renderAdvisorChat = function() {
+  originalAdvisorView();
+
+  const box = document.createElement('div');
+  box.className = 'card';
+
+  box.innerHTML = `
+    <h3>حوّل أرقامك إلى خطوات واضحة</h3>
+
+    <div class="row">
+      <button class="primary" onclick="showReportCenter('basic')">
+        نزّل خطتي المالية
+      </button>
+
+      <button onclick="showPlanningForm()">
+        ابنِ خريطة عملي
+      </button>
+    </div>
+
+    <p class="muted">
+      الخطة مبنية على بياناتك المتاحة وتوضح ما ينقصها.
+    </p>
+  `;
+
+  $('app').prepend(box);
+};
+
+/* =========================================================
+   20. فصل التقارير عن النسخ الاحتياطي
+   ========================================================= */
+
+const originalBoot = boot;
+
+boot = function() {
+  originalBoot();
+
+  const exportButton = document.querySelector(
+    'button[onclick="exportBackupData()"]'
+  );
+
+  if (exportButton) {
+    exportButton.textContent = '📄 التقارير';
+    exportButton.onclick = () => showReportCenter();
+  }
+
+  const advanced = document.createElement('details');
+
+  advanced.innerHTML = `
+    <summary>النسخ الاحتياطي والاستعادة</summary>
+
+    <p class="muted">
+      JSON للاستعادة البرمجية، وليس تقرير القراءة.
+      التقارير المقروءة لا تستعيد بيانات التطبيق.
+    </p>
+
+    <div class="row">
+      <button onclick="exportBackupData()">
+        تنزيل نسخة JSON
+      </button>
+
+      <button onclick="$('import-file').click()">
+        استعادة JSON
+      </button>
+
+      <button onclick="exportPrior()">
+        النسخة السابقة للاستيراد
+      </button>
+    </div>
+  `;
+
+  document.querySelector('.container').appendChild(advanced);
+
+  const importButton = document.querySelector(
+    'header button[onclick*="import-file"]'
+  );
+
+  if (importButton) {
+    importButton.style.display = 'none';
+  }
+
+  document.querySelectorAll('.container > button').forEach(b => {
+    if (b.textContent === 'تصدير النسخة السابقة للاستيراد') {
+      b.remove();
+    }
+  });
+};
+
+/* =========================================================
+   21. التشغيل
+   ========================================================= */
+
+if (
+  typeof window !== 'undefined' &&
+  !window.__HASEEF_TEST__
+) {
   try {
     boot();
   } catch (e) {
